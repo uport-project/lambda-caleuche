@@ -31,6 +31,7 @@ skinparam sequence {
 participant "uPort MobileApp" as uPortMobileApp
 participant "lamba-caleuche" as lambda
 database "AWS::S3" as S3
+participant "SNS MNID Topic" as SNS
 
 uPortMobileApp -> lambda: Post Event\nPOST /v1/event
 activate lambda
@@ -39,6 +40,7 @@ lambda -> lambda: Check if "previous_event" is the current event
 lambda -> lambda: calc event id/hash
 lambda --> S3: store event
 lambda --> S3: update index.json
+lambda --> SNS: publish event
 
 lambda --> uPortMobileApp: 200
 deactivate lambda
