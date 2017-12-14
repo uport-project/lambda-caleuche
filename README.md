@@ -45,6 +45,7 @@ The `event_token` is a MNID signed jwt of the event wanted to post. The payload 
 |:------:|----------------|---------------------------------------------------|
 | 200    | Ok.            | Check started and saved                           |
 | 401    | Invalid JWT    | Posted token is invalid (signature, expired, etc) |
+| 403    | Missing data   | no `event` or no `previous`                           |
 | 409    | Bad previous   | `previous` is not the latest id                   |
 | 500    | Internal Error | Internal Error                                    |
 
