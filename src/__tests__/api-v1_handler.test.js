@@ -13,7 +13,7 @@ describe('apiV1Handler', () => {
     })
 
     test('event_post()', done => {
-        apiV1Handler.check_post({},{},(err,res)=>{
+        apiV1Handler.event_post({},{},(err,res)=>{
             expect(err).toBeNull()
             expect(res).not.toBeNull()
             
