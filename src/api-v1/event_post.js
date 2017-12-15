@@ -14,21 +14,37 @@ class V1EventPostHandler {
         cb({code:403, message:'no json body: '+e.toString()})
         return;
     }
-    
+
+    // Check if event_token is present
+    if (!(body.event_token)) {
+      cb({code: 403, message: 'no event_token'})
+      return
+    } 
+
+    let dtoken;
+    try{
+      dtoken=await this.uportMgr.decode(event_token)        
+    } catch (error){
+      console.log("Error on this.uportMgr.decode")
+      console.log(error)
+      cb({code: 401, message: 'Invalid token'})
+      return;
+    }
+
     // Check if previous is present
-    if (!(body.previous)) {
+    if (!(dtoken.previous)) {
       cb({code: 403, message: 'no previous'})
       return
     } 
 
-    // Check if event is event
-    if (!(body.event)) {
+    // Check if event is present
+    if (!(dtoken.event)) {
       cb({code: 403, message: 'no event'})
       return
     }
-
-    //Read mnid from ??
-    let mnid=''
+    
+    
+    let mnid=dtoken.iss
  
     //Check if previous is the last event
     try{

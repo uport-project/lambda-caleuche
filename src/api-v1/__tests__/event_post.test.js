@@ -3,10 +3,6 @@ const EventPostHandler = require('../event_post');
 describe('EventPostHandler', () => {
     
     let sut;
-    let previousId='QmeventHash'
-    let sampleEvent={
-        action: 'SAMPLE_ACCTION'
-    }
     let eventMgrMock={ lastId: jest.fn()};
 
     beforeAll(() => {
@@ -30,54 +26,11 @@ describe('EventPostHandler', () => {
         sut.handle({body: "{}"},{},(err,res)=>{
             expect(err).not.toBeNull()
             expect(err.code).toEqual(403)
-            expect(err.message).toEqual('no previous')
+            expect(err.message).toEqual('no event_token')
             done();
         })
     })
 
-    test('handle no previous', (done) =>{
-        let event={
-            body: JSON.stringify({event: sampleEvent})
-        }
-        sut.handle(event,{},(err,res)=>{
-            expect(err).not.toBeNull()
-            expect(err.code).toEqual(403)
-            expect(err.message).toEqual('no previous')
-            done();
-        })
-    });
-
-    test('handle no event', (done) =>{
-        let event={
-            body: JSON.stringify({previous: previousId})
-        }
-        sut.handle(event,{},(err,res)=>{
-            expect(err).not.toBeNull()
-            expect(err.code).toEqual(403)
-            expect(err.message).toEqual('no event')
-            done();
-        })
-    });
-    
-    test('fail on eventMgr.lastId', done => {
-        eventMgrMock.lastId.mockImplementation(()=>{ 
-            throw(new Error("eventMgr error"))   
-        })
-        let event={
-            body: JSON.stringify({
-                event: sampleEvent,
-                previous: previousId
-            })
-        }
-        
-        sut.handle(event,{},(err,res)=>{
-            expect(err).not.toBeNull();
-            expect(err.code).toEqual(500)
-            expect(err.message).toEqual("eventMgr error")
-            expect(res).toBeUndefined();
-            done();
-        })
-    })
 
     
 });
