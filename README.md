@@ -55,7 +55,7 @@ The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) stan
 ```
 {
   status: 'success',
-  message: {
+  data: {
     id: <id/hash of the accepted event>
   }
 }

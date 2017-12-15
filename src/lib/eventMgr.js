@@ -9,9 +9,23 @@ class EventMgr {
     async lastId(mnid){
         if(!mnid) throw('no mnid') 
 
-        //Get in S3
+        //Get from mnid/index.json
         
         return null;
+    }
+
+    async getId(eventData){
+        //Calc hash of eventData (IPFS style please)
+        return 1;
+    }
+
+    async store(mnid,eventId,eventData){
+        //Store eventData in mnid/eventId.json
+
+        //Add eventId to mnid/index.json
+
+        
+        return;
     }
 
 }

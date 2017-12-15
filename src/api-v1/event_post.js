@@ -1,6 +1,7 @@
 
 class V1EventPostHandler {
-  constructor (eventMgr) {
+  constructor (uPortMgr,eventMgr) {
+    this.uPortMgr = uPortMgr
     this.eventMgr = eventMgr
   }
 
@@ -23,10 +24,10 @@ class V1EventPostHandler {
 
     let payload;
     try{
-      let dtoken=await this.uportMgr.verifyToken(event_token)
+      let dtoken=await this.uPortMgr.verifyToken(body.event_token)
       payload=dtoken.payload
     } catch (error){
-      console.log("Error on this.uportMgr.decode")
+      console.log("Error on this.uportMgr.verifyToken")
       console.log(error)
       cb({code: 401, message: 'Invalid token'})
       return;
@@ -56,6 +57,33 @@ class V1EventPostHandler {
       return;
     }
 
+    //Get eventId
+    let eventId
+    //Check if previous is the last event
+    try{
+      eventId=await this.eventMgr.getId(payload.event)        
+      console.log("eventId is: "+eventId)
+    } catch (error){
+      console.log("Error on this.eventMgr.getId")
+      console.log(error)
+      cb({code: 500, message: error.message})
+      return;
+    }
+
+    
+    //Store event
+    try{
+      await this.eventMgr.store(mnid,eventId,payload.event)        
+      console.log("event stored: "+eventId)
+    } catch (error){
+      console.log("Error on this.eventMgr.store")
+      console.log(error)
+      cb({code: 500, message: error.message})
+      return;
+    }
+    
+    //Return eventId
+    cb(null,{id: eventId});
     
 
   }

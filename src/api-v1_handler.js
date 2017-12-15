@@ -3,14 +3,16 @@ const AWS = require('aws-sdk');
 
 const S3Mgr = require('./lib/s3Mgr');
 const EventMgr = require('./lib/eventMgr');
+const UportMgr = require('./lib/uPortMgr');
 
 const V1EventPostHandler = require('./api-v1/event_post');
 
 let s3Mgr = new S3Mgr();
 let eventMgr = new EventMgr(s3Mgr);
+let uPortMgr = new UportMgr();
 
-let v1EventPostHandler = new V1EventPostHandler(eventMgr);
-module.exports.check_post = (event, context, callback) => { preHandler(v1EventPostHandler,event,context,callback) }
+let v1EventPostHandler = new V1EventPostHandler(uPortMgr,eventMgr);
+module.exports.event_post = (event, context, callback) => { preHandler(v1EventPostHandler,event,context,callback) }
 
 const preHandler = (handler,event,context,callback) =>{
   console.log(event)
