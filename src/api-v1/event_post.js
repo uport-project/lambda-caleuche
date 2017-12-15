@@ -21,9 +21,10 @@ class V1EventPostHandler {
       return
     } 
 
-    let dtoken;
+    let payload;
     try{
-      dtoken=await this.uportMgr.decode(event_token)        
+      let dtoken=await this.uportMgr.verifyToken(event_token)
+      payload=dtoken.payload
     } catch (error){
       console.log("Error on this.uportMgr.decode")
       console.log(error)
@@ -31,26 +32,20 @@ class V1EventPostHandler {
       return;
     }
 
-    // Check if previous is present
-    if (!(dtoken.previous)) {
-      cb({code: 403, message: 'no previous'})
-      return
-    } 
-
     // Check if event is present
-    if (!(dtoken.event)) {
+    if (!(payload.event)) {
       cb({code: 403, message: 'no event'})
       return
     }
     
     
-    let mnid=dtoken.iss
+    let mnid=payload.iss
  
     //Check if previous is the last event
     try{
       let lastId=await this.eventMgr.lastId(mnid)        
       console.log("lastId for the mnid '"+mnid+"' is: "+lastId)
-      if (lastId!=body.previous){
+      if (lastId!=payload.previous){
         cb({code: 409, message: 'previous is not the latest id'})
         return
       }
@@ -60,6 +55,8 @@ class V1EventPostHandler {
       cb({code: 500, message: error.message})
       return;
     }
+
+    
 
   }
 
