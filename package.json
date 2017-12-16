@@ -25,6 +25,8 @@
     "jest": "^21.2.0"
   },
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "multi-hash": "^0.1.1",
     "serverless-kms-secrets": "^1.0.2",
     "serverless-webpack": "^3.1.0",
     "uport": "0.6.0",
