@@ -47,7 +47,7 @@ class V1EventPostHandler {
       let lastId=await this.eventMgr.lastId(mnid)        
       console.log("lastId for the mnid '"+mnid+"' is: "+lastId)
       if (lastId!=payload.previous){
-        cb({code: 409, message: 'previous is not the latest id'})
+        cb({code: 409, message: 'previous is not the latest id', data: lastId})
         return
       }
     } catch (error){
@@ -59,7 +59,6 @@ class V1EventPostHandler {
 
     //Get eventId
     let eventId
-    //Check if previous is the last event
     try{
       eventId=await this.eventMgr.getId(payload.event)        
       console.log("eventId is: "+eventId)
