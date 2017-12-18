@@ -60,7 +60,7 @@ class V1EventPostHandler {
     //Get eventId
     let eventId
     try{
-      eventId=await this.eventMgr.getId(payload.event)        
+      eventId=await this.eventMgr.getId(payload)        
       console.log("eventId is: "+eventId)
     } catch (error){
       console.log("Error on this.eventMgr.getId")
