@@ -2,7 +2,7 @@
 const S3Mgr = require('../s3Mgr');
 
 describe('S3Mgr', () => {
-    
+
     let sut;
     let mnid='2fakemnid'
     let eventId='2eventId'
@@ -31,7 +31,7 @@ describe('S3Mgr', () => {
             fail("shouldn't return"); done()
         })
         .catch( (err)=>{
-            expect(err).toEqual('no mnid')
+            expect(err).toEqual('no key')
             done()
         })
     });
@@ -42,7 +42,7 @@ describe('S3Mgr', () => {
             fail("shouldn't return"); done()
         })
         .catch( (err)=>{
-            expect(err).toEqual('no eventId')
+            expect(err).toEqual('no filename')
             done()
         })
     });
@@ -53,7 +53,7 @@ describe('S3Mgr', () => {
             fail("shouldn't return"); done()
         })
         .catch( (err)=>{
-            expect(err).toEqual('no event')
+            expect(err).toEqual('no data')
             done()
         })
     });
@@ -68,7 +68,7 @@ describe('S3Mgr', () => {
             done()
         })
     });
-    
-    
+
+
 
 })
