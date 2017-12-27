@@ -2,7 +2,7 @@ import multihash from 'multi-hash'
 import SHA256  from 'crypto-js/sha256'
 
 class EventMgr {
-    
+
     constructor(s3Mgr) {
         this.s3Mgr=s3Mgr;
     }
@@ -24,11 +24,11 @@ class EventMgr {
 
 
     async lastId(mnid){
-        if(!mnid) throw('no mnid') 
+        if(!mnid) throw('no mnid')
 
         //Get from mnid/index.json
         let index=await this.getIndex(mnid);
-        
+
         return index.length==0 ? null : index[index.length-1];
     }
 
@@ -47,7 +47,7 @@ class EventMgr {
         let index=await this.getIndex(mnid);
         index.push(eventId)
         await this.s3Mgr.store(mnid,'index.json',JSON.stringify(index))
-        
+
         return;
     }
 

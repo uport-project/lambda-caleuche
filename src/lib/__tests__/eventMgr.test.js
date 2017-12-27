@@ -2,7 +2,7 @@
 const EventMgr = require('../eventMgr');
 
 describe('EventMgr', () => {
-    
+
     let sut;
     let mnid='2fakemnid'
     let s3Mgr;
@@ -26,7 +26,7 @@ describe('EventMgr', () => {
             done()
         })
     });
-    
-    
+
+
 
 })

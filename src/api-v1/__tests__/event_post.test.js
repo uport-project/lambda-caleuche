@@ -1,7 +1,7 @@
 const EventPostHandler = require('../event_post');
 
 describe('EventPostHandler', () => {
-    
+
     let sut;
     let eventMgrMock={ lastId: jest.fn()};
 
@@ -31,6 +31,15 @@ describe('EventPostHandler', () => {
         })
     })
 
+    test('handle invalid token', done => {
+        sut.handle({body: JSON.stringify({event_token: 'asdf'})},{},(err,res)=>{
+            expect(err).not.toBeNull()
+            expect(err.code).toEqual(401)
+            expect(err.message).toEqual('Invalid token')
+            done();
+        })
+    })
 
-    
+
+
 });

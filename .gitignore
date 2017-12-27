@@ -63,3 +63,5 @@ typings/
 .webpack/
 
 sample_events/
+
+.DS_Store
