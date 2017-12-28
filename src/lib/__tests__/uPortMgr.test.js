@@ -29,8 +29,12 @@ describe('UportMgr', () => {
     });
 
     test('verifyToken() happy path', (done) =>{
+        const DATE_TO_USE = new Date('2017-12-15T22:41:20');
+        Date.now = jest.genMockFunction().mockReturnValue(DATE_TO_USE)
+
         sut.verifyToken(eventToken)
         .then((resp)=> {
+            console.log(resp)
             expect(resp.jwt).toEqual(eventToken)
             //expect(resp.payload).toEqual('a')
             expect(resp.payload.event.address).toEqual('2ozsFQWAU7CpHZLqu2wSYbJFWzDNB26aoCF')
