@@ -34,7 +34,6 @@ describe('UportMgr', () => {
 
         sut.verifyToken(eventToken)
         .then((resp)=> {
-            console.log(resp)
             expect(resp.jwt).toEqual(eventToken)
             //expect(resp.payload).toEqual('a')
             expect(resp.payload.event.address).toEqual('2ozsFQWAU7CpHZLqu2wSYbJFWzDNB26aoCF')
