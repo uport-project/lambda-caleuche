@@ -6,21 +6,22 @@ class V1EventPostHandler {
   }
 
   async handle(event,context, cb) {
-    
+
     //Parse body
     let body;
-    try{ 
-        body = JSON.parse(event.body) 
+    try{
+        body = JSON.parse(event.body)
     } catch(e){
         cb({code:403, message:'no json body: '+e.toString()})
         return;
     }
 
+
     // Check if event_token is present
     if (!(body.event_token)) {
       cb({code: 403, message: 'no event_token'})
       return
-    } 
+    }
 
     let payload;
     try{
@@ -38,13 +39,13 @@ class V1EventPostHandler {
       cb({code: 403, message: 'no event'})
       return
     }
-    
-    
+
+
     let mnid=payload.iss
- 
+
     //Check if previous is the last event
     try{
-      let lastId=await this.eventMgr.lastId(mnid)        
+      let lastId=await this.eventMgr.lastId(mnid)
       console.log("lastId for the mnid '"+mnid+"' is: "+lastId)
       if (lastId!=payload.previous){
         cb({code: 409, message: 'previous is not the latest id', data: lastId})
@@ -60,7 +61,7 @@ class V1EventPostHandler {
     //Get eventId
     let eventId
     try{
-      eventId=await this.eventMgr.getId(payload)        
+      eventId=await this.eventMgr.getId(payload)
       console.log("eventId is: "+eventId)
     } catch (error){
       console.log("Error on this.eventMgr.getId")
@@ -69,10 +70,10 @@ class V1EventPostHandler {
       return;
     }
 
-    
+
     //Store event
     try{
-      await this.eventMgr.store(mnid,eventId,payload)        
+      await this.eventMgr.store(mnid,eventId,payload)
       console.log("event stored: "+eventId)
     } catch (error){
       console.log("Error on this.eventMgr.store")
@@ -80,10 +81,10 @@ class V1EventPostHandler {
       cb({code: 500, message: error.message})
       return;
     }
-    
+
     //Return eventId
     cb(null,{id: eventId});
-    
+
 
   }
 
