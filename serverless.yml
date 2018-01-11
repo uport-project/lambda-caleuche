@@ -14,7 +14,7 @@ provider:
       Action:
       - s3:*
       Resource: 'arn:aws:s3:::*'
-      
+
   environment:
       SECRETS: ${self:custom.kmsSecrets.secrets.SECRETS}
 
@@ -22,6 +22,7 @@ provider:
 plugins:
   - serverless-webpack
   - serverless-kms-secrets
+  - serverless-offline
 
 # Enable auto-packing of external modules
 custom:
