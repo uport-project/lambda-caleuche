@@ -6,13 +6,17 @@ const EventMgr = require('./lib/eventMgr');
 const UportMgr = require('./lib/uPortMgr');
 
 const V1EventPostHandler = require('./api-v1/event_post');
+const V1EventGetHandler = require('./api-v1/event_get');
 
 let s3Mgr = new S3Mgr();
 let eventMgr = new EventMgr(s3Mgr);
 let uPortMgr = new UportMgr();
 
 let v1EventPostHandler = new V1EventPostHandler(uPortMgr,eventMgr);
-module.exports.event_post = (event, context, callback) => { preHandler(v1EventPostHandler,event,context,callback) }
+module.exports.event_post = (event, context, callback) => { preHandler(v1EventPostHandler, event,context,callback) }
+
+let v1EventGetHandler = new V1EventGetHandler(uPortMgr, eventMgr);
+module.exports.event_get = (event, context, callback) => { preHandler(v1EventGetHandler, event, context, callback) }
 
 const preHandler = (handler,event,context,callback) =>{
   console.log(event)
@@ -47,7 +51,7 @@ const doHandler = (handler,event,context,callback) =>{
       if(err.code) code=err.code;
       let message=err;
       if(err.message) message=err.message;
-      
+
       response = {
         statusCode: code,
         body: JSON.stringify({
@@ -60,4 +64,4 @@ const doHandler = (handler,event,context,callback) =>{
     callback(null, response)
   })
 
-} 
+}

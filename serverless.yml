@@ -38,4 +38,25 @@ functions:
      - http:
          path: v1/event
          method: post
-      
+
+  event_get_all:
+    handler: src/api-v1_handler.event_get
+    description: Gets all of the events belonging to the user
+    events:
+     - http:
+         path: v1/event
+         method: get
+
+  event_get:
+    handler: src/api-v1_handler.event_get
+    description: Retrieve a particular event
+    events:
+     - http:
+         path: v1/event/{id}
+         method: get
+         request:
+            parameters:
+              paths:
+                id: true
+
+
