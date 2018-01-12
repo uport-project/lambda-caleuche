@@ -6,6 +6,7 @@ describe('EventMgr', () => {
     let sut;
     let mnid='2fakemnid'
     let s3Mgr;
+    let eventData = {name: "Cristobal"};
 
     beforeAll(() => {
         sut = new EventMgr(s3Mgr);
@@ -25,6 +26,14 @@ describe('EventMgr', () => {
             expect(err).toEqual('no mnid')
             done()
         })
+    });
+
+    test('getId()', (done) =>{
+      sut.getId(eventData)
+      .then((resp)=> {
+        expect(resp).toEqual("QmdNq6fsVZgmHoUknGHdwrm27uYBrTDBfLw2ZWsppyD27y")
+        done();
+      })
     });
 
 
