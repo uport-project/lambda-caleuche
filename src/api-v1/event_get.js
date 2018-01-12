@@ -50,11 +50,11 @@ class V1EventGetHandler {
         } else {
             //fetch all the events
             let index
-            let V1EventGetHandler
+            let evt
             let events = []
             try {
                 index = await this.eventMgr.getIndex(mnid)
-                for (i = 0; i < index.length; i++) {
+                for (let i = 0; i < index.length; i++) {
                     try {
                         evt = await this.eventMgr.read(mnid, index[i])
                         events.push(evt)
@@ -65,6 +65,7 @@ class V1EventGetHandler {
                         return;
                     }
                 }
+                cb(null, {events: events})
             } catch (error) {
                 console.log("Error on this.eventMgr.getIndex")
                 console.log(error)
