@@ -60,6 +60,8 @@ describe('EventGetHandler', () => {
     })
 
     test('handle valid token', done => {
+      let mockedDate = new Date('2018-01-12');
+      Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
         sut.handle({ body: JSON.stringify({ event_token: validToken }) }, {}, (err, res) => {
             expect(err).toBeNull()
             expect(res).not.toBeNull()
