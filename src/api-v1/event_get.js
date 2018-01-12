@@ -35,11 +35,11 @@ class V1EventGetHandler {
 
         if (event.pathParameters && event.pathParameters.id){
             let eventId;
+            let evt;
             eventId = event.pathParameters.id
             try {
-                await this.eventMgr.read(mnid, eventId)
-                console.log("event fetched: " + eventId)
-                cb(null, {id: eventId})
+                evt = await this.eventMgr.read(mnid, eventId)
+                cb(null, {events: evt})
                 return;
             } catch (error) {
                 console.log("Error on this.eventMgr.read")
