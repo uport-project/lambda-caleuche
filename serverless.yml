@@ -42,11 +42,29 @@ functions:
 
   event_get_all:
     handler: src/api-v1_handler.event_get
-    description: Gets all of the events belonging to the user
+    description: Gets all of the events with a limit of 100
     events:
      - http:
          path: v1/event
          method: get
+         request:
+           parameters:
+             paths:
+               page: false
+               per_page: false
+
+  event_get_paginated:
+    handler: src/api-v1_handler.event_get
+    description: Gets a paginated subset of the events of the user.
+    events:
+     - http:
+         path: v1/event/{page}/{per_page}
+         method: get
+         request:
+           parameters:
+             paths:
+               page: true
+               per_page: true
 
   event_get:
     handler: src/api-v1_handler.event_get
@@ -59,5 +77,3 @@ functions:
             parameters:
               paths:
                 id: true
-
-

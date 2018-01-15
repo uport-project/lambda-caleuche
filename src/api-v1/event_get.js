@@ -50,13 +50,29 @@ class V1EventGetHandler {
         } else {
             //fetch all the events
             let index
+            let paginatedIndex
             let evt
+            let page
+            let perPage
             let events = []
+
+            let params = event.pathParameters
+
+            if (params && params.page && params.per_page){
+              page = params.page
+              perPage = params.per_page
+            } else {
+              //provide defaults
+              page = 1
+              perPage = 100
+            }
+
             try {
                 index = await this.eventMgr.getIndex(mnid)
-                for (let i = 0; i < index.length; i++) {
+                paginatedIndex = await this.paginate(index, page, perPage)
+                for (let i = 0; i < paginatedIndex.length; i++) {
                     try {
-                        evt = await this.eventMgr.read(mnid, index[i])
+                        evt = await this.eventMgr.read(mnid, paginatedIndex[i])
                         events.push(evt)
                     } catch (error) {
                         console.log("Error on this.eventMgr.read")
@@ -75,6 +91,20 @@ class V1EventGetHandler {
         }
 
     }
+
+    async paginate(events, page = 1, per_page = 100){
+      let firstEvent
+      let subset
+
+      if ( page < 2 ){
+        firstEvent = 0
+      } else {
+        firstEvent = ( per_page * page ) - 1
+      }
+      subset = events.slice(firstEvent - 1,firstEvent  - 1 + per_page)
+      return subset;
+    }
+
 }
 
 module.exports = V1EventGetHandler

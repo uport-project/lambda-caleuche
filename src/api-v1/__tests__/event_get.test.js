@@ -70,6 +70,20 @@ describe('EventGetHandler', () => {
         })
     })
 
+    test('get paginated events', done => {
+      let mockedDate = new Date('2018-01-12');
+      Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
+      sut.eventMgr.read = jest.fn(() => {
+        return Promise.resolve(evt)
+      })
+      sut.handle({ body: JSON.stringify({ event_token: validToken }),  pathParameters: {page: 2, per_page: 2} }, {}, (err, res) => {
+        expect(err).toBeNull()
+        expect(res.events).not.toBeNull()
+        expect(res.events.length).toEqual(2)
+        done();
+      })
+    })
+
     test('get single event', done => {
       let mockedDate = new Date('2018-01-12');
       Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
@@ -83,6 +97,13 @@ describe('EventGetHandler', () => {
       })
     })
 
-
+    test('handle pagination', done => {
+      let index = [1,2,3,4,5,6,7,8,9]
+      sut.paginate(index, 2, 2)
+      .then((resp)=> {
+        expect(resp).toEqual([3,4])
+        done();
+      })
+    })
 
 });
