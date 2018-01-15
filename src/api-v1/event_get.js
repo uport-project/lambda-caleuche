@@ -5,24 +5,31 @@ class V1EventGetHandler {
     }
 
     async handle(event, context, cb) {
-        //Parse body
-        let body;
-        try {
-            body = JSON.parse(event.body)
-        } catch (e) {
-            cb({ code: 403, message: 'no json body: ' + e.toString() })
-            return;
+        if(!event.headers){
+          cb({code: 403, message:'no headers'})
+          return;
+        }
+        if(!event.headers['Authorization']){
+          cb({code: 403, message:'no authorization header'})
+          return;
         }
 
-        // Check if event_token is present
-        if (!(body.event_token)) {
-            cb({ code: 403, message: 'no event_token' })
-            return
+        let authHead=event.headers['Authorization']
+
+        let parts = authHead.split(' ')
+        if (parts.length !== 2) {
+          cb({code: 401, message:'Format is Authorization: Bearer [token]'})
+          return;
+        }
+        let scheme = parts[0];
+        if (scheme !== 'Bearer') {
+          cb({code: 401, message:'Format is Authorization: Bearer [token]'})
+          return;
         }
 
-        let payload;
+        let payload
         try {
-            let dtoken = await this.uPortMgr.verifyToken(body.event_token)
+            let dtoken = await this.uPortMgr.verifyToken(parts[1])
             payload = dtoken.payload
         } catch (error) {
             console.log("Error on this.uportMgr.verifyToken")
@@ -32,6 +39,27 @@ class V1EventGetHandler {
         }
 
         let mnid = payload.iss
+
+        // let dtoken
+        // try {
+        //     dtoken = decodeToken(parts[1])
+        // } catch (err) {
+        //     console.log(err)
+        //     throw('Invalid JWT token')
+        //}
+
+
+        // try {
+        //     let dtoken = await this.uPortMgr.verifyToken(body.event_token)
+        //     payload = dtoken.payload
+        // } catch (error) {
+        //     console.log("Error on this.uportMgr.verifyToken")
+        //     console.log(error)
+        //     cb({ code: 401, message: 'Invalid token' })
+        //     return;
+        // }
+        //
+        // let mnid = payload.iss
 
         if (event.pathParameters && event.pathParameters.id){
             let eventId;

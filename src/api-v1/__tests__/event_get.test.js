@@ -33,7 +33,7 @@ describe('EventGetHandler', () => {
         expect(sut).not.toBeUndefined();
     });
 
-    test('handle null body', done => {
+    test('handle null event', done => {
         sut.handle({}, {}, (err, res) => {
             expect(err).not.toBeNull()
             expect(err.code).toEqual(403)
@@ -42,17 +42,35 @@ describe('EventGetHandler', () => {
         })
     });
 
-    test('handle empty body', done => {
-        sut.handle({ body: "{}" }, {}, (err, res) => {
+    test('handle empty header', done => {
+        sut.handle({ headers: "{}" }, {}, (err, res) => {
             expect(err).not.toBeNull()
             expect(err.code).toEqual(403)
-            expect(err.message).toEqual('no event_token')
+            expect(err.message).toEqual('no authorization header')
+            done();
+        })
+    })
+
+    test('handle malformed auth header', done => {
+        sut.handle({ headers:{Authorization: 'Token'} }, {}, (err, res) => {
+            expect(err).not.toBeNull()
+            expect(err.code).toEqual(401)
+            expect(err.message).toEqual('Format is Authorization: Bearer [token]')
+            done();
+        })
+    })
+
+    test('handle mispelled Bearer, in auth', done => {
+        sut.handle({ headers:{Authorization: 'Bier Token'} }, {}, (err, res) => {
+            expect(err).not.toBeNull()
+            expect(err.code).toEqual(401)
+            expect(err.message).toEqual('Format is Authorization: Bearer [token]')
             done();
         })
     })
 
     test('handle invalid token', done => {
-        sut.handle({ body: JSON.stringify({ event_token: 'asdf' }) }, {}, (err, res) => {
+        sut.handle({ headers:{Authorization: 'Bearer asdf'} }, {}, (err, res) => {
             expect(err).not.toBeNull()
             expect(err.code).toEqual(401)
             expect(err.message).toEqual('Invalid token')
@@ -63,7 +81,7 @@ describe('EventGetHandler', () => {
     test('handle valid token', done => {
       let mockedDate = new Date('2018-01-12');
       Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
-        sut.handle({ body: JSON.stringify({ event_token: validToken }) }, {}, (err, res) => {
+        sut.handle({ headers: { Authorization: 'Bearer '+validToken } }, {}, (err, res) => {
             expect(err).toBeNull()
             expect(res).not.toBeNull()
             done();
@@ -76,7 +94,10 @@ describe('EventGetHandler', () => {
       sut.eventMgr.read = jest.fn(() => {
         return Promise.resolve(evt)
       })
-      sut.handle({ body: JSON.stringify({ event_token: validToken }),  pathParameters: {page: 2, per_page: 2} }, {}, (err, res) => {
+      sut.handle({
+        headers: { Authorization: 'Bearer '+validToken },
+        pathParameters: {page: 2, per_page: 2}
+      }, {}, (err, res) => {
         expect(err).toBeNull()
         expect(res.events).not.toBeNull()
         expect(res.events.length).toEqual(2)
@@ -90,7 +111,10 @@ describe('EventGetHandler', () => {
       sut.eventMgr.read = jest.fn(() => {
         return Promise.resolve(evt)
       })
-      sut.handle({ body: JSON.stringify({ event_token: validToken }),  pathParameters: {id: eventId} }, {}, (err, res) => {
+      sut.handle({
+        headers: { Authorization: 'Bearer '+validToken },
+        pathParameters: {id: eventId}
+      }, {}, (err, res) => {
         expect(err).toBeNull()
         expect(res).toEqual({events: evt})
         done();
