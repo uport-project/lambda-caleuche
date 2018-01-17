@@ -33,7 +33,7 @@ class EventMgr {
       index.map(function(key,index) {
         hashedIndex[key] = index
       })
-      let from = hashedIndex[key]
+      let from = hashedIndex[eventId]
       return index.slice(from, from + index.length);
     }
 
