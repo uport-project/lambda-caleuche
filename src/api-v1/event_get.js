@@ -37,29 +37,10 @@ class V1EventGetHandler {
             cb({ code: 401, message: 'Invalid token' })
             return;
         }
+        console.log("payload", payload)
 
         let mnid = payload.iss
-
-        // let dtoken
-        // try {
-        //     dtoken = decodeToken(parts[1])
-        // } catch (err) {
-        //     console.log(err)
-        //     throw('Invalid JWT token')
-        //}
-
-
-        // try {
-        //     let dtoken = await this.uPortMgr.verifyToken(body.event_token)
-        //     payload = dtoken.payload
-        // } catch (error) {
-        //     console.log("Error on this.uportMgr.verifyToken")
-        //     console.log(error)
-        //     cb({ code: 401, message: 'Invalid token' })
-        //     return;
-        // }
-        //
-        // let mnid = payload.iss
+        let previous = payload.previous
 
         if (event.pathParameters && event.pathParameters.id){
             let eventId;
@@ -76,7 +57,7 @@ class V1EventGetHandler {
                 return;
             }
         } else {
-            //fetch all the events
+            //fetch all the events since the previous
             let index
             let paginatedIndex
             let evt
@@ -96,8 +77,8 @@ class V1EventGetHandler {
             }
 
             try {
-                index = await this.eventMgr.getIndex(mnid)
-                paginatedIndex = await this.paginate(index, page, perPage)
+                let eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous)
+                paginatedIndex = await this.paginate(eventsFrom, page, perPage)
                 for (let i = 0; i < paginatedIndex.length; i++) {
                     try {
                         evt = await this.eventMgr.read(mnid, paginatedIndex[i])
@@ -109,7 +90,7 @@ class V1EventGetHandler {
                         return;
                     }
                 }
-                cb(null, {events: events})
+                cb(null, {events: events, total: eventsFrom.length})
             } catch (error) {
                 console.log("Error on this.eventMgr.getIndex")
                 console.log(error)

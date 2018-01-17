@@ -15,10 +15,22 @@ describe('EventGetHandler', () => {
             "phone": null
         }
     }
+    let evtIndex = [
+      "QmRqAU4MGHrm7sj89UPwZZ2sfJ2suL758hc8mTyB1sfQ6r",
+      "QmRWjSDMuMPuPvysjddGLxZH88Rt3v316bA1S7tFMzXP6A",
+      "QmNzA2Y2u6Q1GVwo6XzHP9gBcfzxohbGU7tfPAGZGZ4E4G",
+      "QmdVmAQ8SEc1xDY3sCAsGxQeYJcwZ84adnfDgGmvZsQsFY",
+      "QmbgRnNicPvTGApVhaY59YTtyNJkWHh6mDiXX5cHhiUoiP",
+      "Qmef2P32j5jMwjhkZ2L3a8qvETeTCxtRiGYLkD3ZmLAbB2",
+      "QmSBSkvrsqzi5P3fVYYUsNMXZVKuVGtKbD9HkAZkRxbMPQ",
+      "QmWuk4syE82P4ut266A49MaNoGoQcwg8XTQkTkKGg3fpVH"
+    ]
+    let evtFrom = "QmNzA2Y2u6Q1GVwo6XzHP9gBcfzxohbGU7tfPAGZGZ4E4G"
     let uportMgrMock = new UportMgr();
     let eventMgrMock = {
         lastId: jest.fn(),
-        getIndex: jest.fn(() => { return Promise.resolve( [1,4,9,122] ) }),
+        getEventsFrom: jest.fn(() => { return Promise.resolve( evtIndex.slice(2,2+6) ) }),
+        getIndex: jest.fn(() => { return Promise.resolve( evtIndex ) }),
         read: jest.fn(() => {
             return Promise.resolve(evt) })
     }
@@ -99,6 +111,7 @@ describe('EventGetHandler', () => {
         pathParameters: {page: 2, per_page: 2}
       }, {}, (err, res) => {
         expect(err).toBeNull()
+        expect(res.total).toEqual(6)
         expect(res.events).not.toBeNull()
         expect(res.events.length).toEqual(2)
         done();
