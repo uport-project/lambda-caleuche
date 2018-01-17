@@ -37,7 +37,6 @@ class V1EventGetHandler {
             cb({ code: 401, message: 'Invalid token' })
             return;
         }
-        console.log("payload", payload)
 
         let mnid = payload.iss
         let previous = payload.previous
