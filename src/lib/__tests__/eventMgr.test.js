@@ -92,8 +92,8 @@ describe('EventMgr', () => {
     test('getEventsFrom()', (done) =>{
       sut.getEventsFrom(mnid, evtFrom)
       .then((resp)=> {
-        expect(resp).toEqual(evtIndex.slice(2,2+6))
-        expect(resp.length).toEqual(6)
+        expect(resp).toEqual(evtIndex.slice(3,3+6))
+        expect(resp.length).toEqual(5)
         done();
       })
     });
