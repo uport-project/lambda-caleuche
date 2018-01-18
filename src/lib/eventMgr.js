@@ -22,6 +22,21 @@ class EventMgr {
         return index;
     }
 
+    async getEventsFrom(mnid, eventId){
+      if(!mnid) throw('no mnid')
+      if(!eventId) throw('no eventId')
+
+      //Get from mnid/index.json
+      let index=await this.getIndex(mnid);
+
+      let hashedIndex = {}
+      index.map(function(key,index) {
+        hashedIndex[key] = index
+      })
+      let from = hashedIndex[eventId] + 1
+      return index.slice(from, from + index.length);
+    }
+
 
     async lastId(mnid){
         if(!mnid) throw('no mnid')
