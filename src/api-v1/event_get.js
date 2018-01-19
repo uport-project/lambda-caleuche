@@ -66,9 +66,9 @@ class V1EventGetHandler {
 
             let params = event.pathParameters
 
-            if (params && params.page && params.per_page){
-              page = params.page
-              perPage = params.per_page
+            if (event.page && event.per_page){
+              page = event.page
+              perPage = event.per_page
             } else {
               //provide defaults
               page = 1

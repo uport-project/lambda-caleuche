@@ -108,7 +108,8 @@ describe('EventGetHandler', () => {
       })
       sut.handle({
         headers: { Authorization: 'Bearer '+validToken },
-        pathParameters: {page: 2, per_page: 2}
+        page: 2,
+        per_page: 2
       }, {}, (err, res) => {
         expect(err).toBeNull()
         expect(res.total).toEqual(6)

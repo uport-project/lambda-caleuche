@@ -40,32 +40,6 @@ functions:
          path: v1/event
          method: post
 
-  event_get_all:
-    handler: src/api-v1_handler.event_get
-    description: Gets all of the events with a limit of 100
-    events:
-     - http:
-         path: v1/event
-         method: get
-         request:
-           parameters:
-             paths:
-               page: false
-               per_page: false
-
-  event_get_paginated:
-    handler: src/api-v1_handler.event_get
-    description: Gets a paginated subset of the events of the user.
-    events:
-     - http:
-         path: v1/event/{page}/{per_page}
-         method: get
-         request:
-           parameters:
-             paths:
-               page: true
-               per_page: true
-
   event_get:
     handler: src/api-v1_handler.event_get
     description: Retrieve a particular event
@@ -77,3 +51,28 @@ functions:
             parameters:
               paths:
                 id: true
+
+  event_get_all:
+    handler: src/api-v1_handler.event_get
+    description: Gets all of the events with a limit of 100
+    events:
+     - http:
+         path: v1/event
+         method: get
+
+
+  event_get_paginated:
+    handler: src/api-v1_handler.event_get
+    description: Gets a paginated subset of the events of the user.
+    events:
+     - http:
+         path: v1/event
+         method: get
+         integration: lambda
+         request:
+           template:
+             application/json: >
+               {
+                 "page" : "$input.params(''page'')",
+                 "per_page": "$input.params(''per_page'')"
+               }
