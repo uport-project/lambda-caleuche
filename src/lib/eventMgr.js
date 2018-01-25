@@ -61,7 +61,7 @@ class EventMgr {
 
       // Add event hash to the response
       envelope.hash = eventId
-      evenlope.event = evt
+      envelope.event = evt
 
       return envelope;
     }
