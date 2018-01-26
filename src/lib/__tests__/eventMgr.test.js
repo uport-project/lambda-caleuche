@@ -5,7 +5,8 @@ describe('EventMgr', () => {
 
     let sut;
     let mnid='2fakemnid'
-    let eventData = {name: "Cristobal"};
+    let singleEventData = {name: "Cristobal"};
+    let singleEventHash = "QmdNq6fsVZgmHoUknGHdwrm27uYBrTDBfLw2ZWsppyD27y"
     let evtIndex = [
       "QmRqAU4MGHrm7sj89UPwZZ2sfJ2suL758hc8mTyB1sfQ6r",
       "QmRWjSDMuMPuPvysjddGLxZH88Rt3v316bA1S7tFMzXP6A",
@@ -18,8 +19,7 @@ describe('EventMgr', () => {
     ];
     let evtFrom = "QmNzA2Y2u6Q1GVwo6XzHP9gBcfzxohbGU7tfPAGZGZ4E4G";
     let s3Mgr = {
-        read: jest.fn(() => {
-            return Promise.resolve(JSON.stringify(evtIndex)) })
+        read: jest.fn()
     };
 
     beforeAll(() => {
@@ -32,6 +32,8 @@ describe('EventMgr', () => {
 
 
     test('lastId() with mnid', (done) =>{
+      s3Mgr.read.mockImplementation(()=>{ return Promise.resolve(JSON.stringify(evtIndex)) })
+
         sut.lastId(mnid)
         .then((resp)=> {
             expect(resp).toEqual("QmWuk4syE82P4ut266A49MaNoGoQcwg8XTQkTkKGg3fpVH")
@@ -51,14 +53,16 @@ describe('EventMgr', () => {
     });
 
     test('getId()', (done) =>{
-      sut.getId(eventData)
+      sut.getId(singleEventData)
       .then((resp)=> {
-        expect(resp).toEqual("QmdNq6fsVZgmHoUknGHdwrm27uYBrTDBfLw2ZWsppyD27y")
+        expect(resp).toEqual(singleEventHash)
         done();
       })
     });
 
     test('getIndex()', (done) =>{
+      s3Mgr.read.mockImplementation(()=>{ return Promise.resolve(JSON.stringify(evtIndex)) })
+
       sut.getIndex(mnid)
       .then((resp)=> {
         expect(resp).toEqual(evtIndex)
@@ -94,6 +98,22 @@ describe('EventMgr', () => {
       .then((resp)=> {
         expect(resp).toEqual(evtIndex.slice(3,3+6))
         expect(resp.length).toEqual(5)
+        done();
+      })
+    });
+
+
+    test('read()', (done) =>{
+      s3Mgr.read.mockImplementation(()=>{ return Promise.resolve(JSON.stringify(singleEventData)) })
+
+      let mockEnvelope = {
+        hash: singleEventHash,
+        event: JSON.stringify(singleEventData)
+      }
+
+      sut.read(mnid, singleEventHash)
+      .then((resp)=> {
+        expect(resp).toEqual(mockEnvelope)
         done();
       })
     });

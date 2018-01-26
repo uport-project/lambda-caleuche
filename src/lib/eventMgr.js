@@ -54,6 +54,18 @@ class EventMgr {
         return ipfsHash;
     }
 
+    async read(mnid, eventId){
+      let envelope = {}
+      //Read event from S3
+      let evt = await this.s3Mgr.read(mnid, eventId)
+
+      // Add event hash to the response
+      envelope.hash = eventId
+      envelope.event = evt
+
+      return envelope;
+    }
+
     async store(mnid,eventId,eventData){
         //Store eventData in mnid/eventId.json
         await this.s3Mgr.store(mnid,eventId,JSON.stringify(eventData))
