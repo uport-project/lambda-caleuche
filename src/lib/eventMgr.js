@@ -24,11 +24,13 @@ class EventMgr {
 
     async getEventsFrom(mnid, eventId){
       if(!mnid) throw('no mnid')
-      if(!eventId) throw('no eventId')
 
       //Get from mnid/index.json
       let index=await this.getIndex(mnid);
 
+      if(!eventId){
+        return index;
+      }
       let hashedIndex = {}
       index.map(function(key,index) {
         hashedIndex[key] = index

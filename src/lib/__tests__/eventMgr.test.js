@@ -85,12 +85,11 @@ describe('EventMgr', () => {
     test('getEventsFrom() no eventId', (done) =>{
         sut.getEventsFrom(mnid, null)
         .then((resp)=> {
-            fail("shouldn't return"); done()
-        })
-        .catch( (err)=>{
-            expect(err).toEqual('no eventId')
+            expect(resp).toEqual(evtIndex)
+            expect(resp.length).toEqual(8)
             done()
         })
+
     });
 
     test('getEventsFrom()', (done) =>{
