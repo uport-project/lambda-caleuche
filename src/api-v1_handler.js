@@ -7,6 +7,7 @@ const UportMgr = require('./lib/uPortMgr');
 
 const V1EventPostHandler = require('./api-v1/event_post');
 const V1EventGetHandler = require('./api-v1/event_get');
+const V1EventDeleteHandler = require('./api-v1/event_delete');
 
 let s3Mgr = new S3Mgr();
 let eventMgr = new EventMgr(s3Mgr);
@@ -17,6 +18,9 @@ module.exports.event_post = (event, context, callback) => { preHandler(v1EventPo
 
 let v1EventGetHandler = new V1EventGetHandler(uPortMgr, eventMgr);
 module.exports.event_get = (event, context, callback) => { preHandler(v1EventGetHandler, event, context, callback) }
+
+let v1EventDeleteHandler = new V1EventDeleteHandler(uPortMgr, eventMgr);
+module.exports.event_delete = (event, context, callback) => { preHandler(v1EventDeleteHandler, event, context, callback) }
 
 const preHandler = (handler,event,context,callback) =>{
   console.log(event)

@@ -80,6 +80,18 @@ class EventMgr {
         return;
     }
 
+    async delete(mnid, eventId){
+        //delete the event from physical storage
+        await this.s3Mgr.delete(mnid,eventId)
+
+        //remove eventId from mnix/index.json
+        let index = await this.getIndex(mnid);
+        index = index.filter(item => item !== eventId)
+        await this.s3Mgr.store(mnid,'index.json', JSON.stringify(index))
+
+        return;
+    }
+
 }
 
 module.exports = EventMgr;

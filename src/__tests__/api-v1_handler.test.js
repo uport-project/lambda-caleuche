@@ -6,7 +6,7 @@ const apiV1Handler = require('../api-v1_handler');
 
 describe('apiV1Handler', () => {
 
-    
+
     beforeAll(()=>{
         MockAWS.mock("KMS", "decrypt", Promise.resolve({Plaintext:"{}"}));
         process.env.SECRETS="badSecret"
@@ -16,7 +16,7 @@ describe('apiV1Handler', () => {
         apiV1Handler.event_post({},{},(err,res)=>{
             expect(err).toBeNull()
             expect(res).not.toBeNull()
-            
+
             done();
         })
     });
