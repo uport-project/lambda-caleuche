@@ -55,7 +55,8 @@ class V1EventDeleteHandler {
                 return;
             }
         } else {
-          cb({ code: 400, message: "No event id"})
+          cb({ code: 400, message: "No event id"});
+          return;
         }
 
     }
