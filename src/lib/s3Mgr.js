@@ -50,6 +50,7 @@ class S3Mgr {
     async delete(key,filename){
         if (!key) throw ('no key')
         if (!filename) throw ('no filename')
+        if (!this.bucket) throw ('no bucket set')
 
         let fullKey = key + "/" + filename
         let params = {

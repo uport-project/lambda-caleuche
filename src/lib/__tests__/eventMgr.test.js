@@ -117,6 +117,4 @@ describe('EventMgr', () => {
       })
     });
 
-
-
 })

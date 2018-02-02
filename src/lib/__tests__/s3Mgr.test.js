@@ -69,6 +69,39 @@ describe('S3Mgr', () => {
         })
     });
 
+    test('delete() no mnid', (done) => {
+        sut.store(null)
+            .then((resp) => {
+                fail("shouldn't return"); done()
+            })
+            .catch((err) => {
+                expect(err).toEqual('no key')
+                done()
+            })
+    });
+
+    test('delete() no filename', (done) => {
+        sut.delete(mnid, null)
+            .then((resp) => {
+                fail("shouldn't return"); done()
+            })
+            .catch((err) => {
+                expect(err).toEqual('no filename')
+                done()
+            })
+    });
+
+    test('delete() no bucket set', (done) => {
+        sut.delete(mnid, eventId)
+            .then((resp) => {
+                fail("shouldn't return"); done()
+            })
+            .catch((err) => {
+                expect(err).toEqual('no bucket set')
+                done()
+            })
+    });
+
 
 
 })
