@@ -32,41 +32,61 @@ custom:
   kmsSecrets: ${file(kms-secrets.${opt:stage, self:provider.stage}.${opt:region, self:provider.region}.yml)}
 
 functions:
+
   event_post:
-    handler: src/api-v1_handler.event_post
+    handler: src/api_handler.event_post
     description: Send a new event
     events:
-     - http:
-         path: v1/event
+      - http:
+         path: v1/event #legacy
+         method: post
+      - http:
+         path: event
          method: post
 
-  event_get:
-    handler: src/api-v1_handler.event_get
-    description: Retrieve a particular event
+  event_delete:
+    handler: src/api_handler.event_delete
+    description: Delete an event
     events:
-     - http:
-         path: v1/event/{id}
+      - http:
+          path: event/{id}
+          method: delete
+          request:
+            parameters:
+              paths:
+                id: true
+
+  event_get:
+    handler: src/api_handler.event_get
+    description: Get an event, a paginated subset or all of the events belonging to an user
+    events:
+      - http:
+         path: event/{id}
          method: get
          request:
             parameters:
               paths:
                 id: true
-
-  event_get_all:
-    handler: src/api-v1_handler.event_get
-    description: Gets all of the events with a limit of 100
-    events:
-     - http:
-         path: v1/event
+      - http:
+         path: v1/event/{id} #legacy
          method: get
-
-
-  event_get_paginated:
-    handler: src/api-v1_handler.event_get
-    description: Gets a paginated subset of the events of the user.
-    events:
-     - http:
-         path: v1/event
+         request:
+            parameters:
+              paths:
+                id: true
+      - http:
+         path: event
+         method: get
+         integration: lambda
+         request:
+           template:
+             application/json: >
+               {
+                 "page" : "$input.params(''page'')",
+                 "per_page": "$input.params(''per_page'')"
+               }
+      - http:
+         path: v1/event #legacy
          method: get
          integration: lambda
          request:

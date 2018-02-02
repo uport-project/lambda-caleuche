@@ -1,4 +1,4 @@
-class V1EventDeleteHandler {
+class EventDeleteHandler {
     constructor(uPortMgr, eventMgr) {
         this.uPortMgr = uPortMgr
         this.eventMgr = eventMgr
@@ -64,4 +64,4 @@ class V1EventDeleteHandler {
 
 }
 
-module.exports = V1EventDeleteHandler
+module.exports = EventDeleteHandler

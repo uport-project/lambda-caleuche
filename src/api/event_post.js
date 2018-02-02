@@ -1,5 +1,5 @@
 
-class V1EventPostHandler {
+class EventPostHandler {
   constructor (uPortMgr,eventMgr) {
     this.uPortMgr = uPortMgr
     this.eventMgr = eventMgr
@@ -90,4 +90,4 @@ class V1EventPostHandler {
 
 }
 
-module.exports = V1EventPostHandler
+module.exports = EventPostHandler
