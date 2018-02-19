@@ -33,7 +33,7 @@ participant "lamba-caleuche" as lambda
 database "AWS::S3" as S3
 participant "SNS MNID Topic" as SNS
 
-uPortMobileApp -> lambda: Post Event\nPOST /v1/event
+uPortMobileApp -> lambda: Post Event\nPOST /event
 activate lambda
 lambda --> S3: get index.json
 lambda -> lambda: Check if "previous_event" is the current event

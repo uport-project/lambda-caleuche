@@ -1,4 +1,4 @@
-class V1EventGetHandler {
+class EventGetHandler {
     constructor(uPortMgr, eventMgr) {
         this.uPortMgr = uPortMgr
         this.eventMgr = eventMgr
@@ -115,4 +115,4 @@ class V1EventGetHandler {
 
 }
 
-module.exports = V1EventGetHandler
+module.exports = EventGetHandler

@@ -47,6 +47,22 @@ class S3Mgr {
         return obj
     }
 
+    async delete(key,filename){
+        if (!key) throw ('no key')
+        if (!filename) throw ('no filename')
+        if (!this.bucket) throw ('no bucket set')
+
+        let fullKey = key + "/" + filename
+        let params = {
+            Bucket: this.bucket,
+            Key: fullKey,
+            Body: data
+        };
+        let data = await this.s3.deleteObject(params).promise()
+        console.log(data)
+        return data
+    }
+
 }
 
 module.exports = S3Mgr;

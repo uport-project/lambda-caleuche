@@ -5,18 +5,22 @@ const S3Mgr = require('./lib/s3Mgr');
 const EventMgr = require('./lib/eventMgr');
 const UportMgr = require('./lib/uPortMgr');
 
-const V1EventPostHandler = require('./api-v1/event_post');
-const V1EventGetHandler = require('./api-v1/event_get');
+const EventPostHandler = require('./api/event_post');
+const EventGetHandler = require('./api/event_get');
+const EventDeleteHandler = require('./api/event_delete');
 
 let s3Mgr = new S3Mgr();
 let eventMgr = new EventMgr(s3Mgr);
 let uPortMgr = new UportMgr();
 
-let v1EventPostHandler = new V1EventPostHandler(uPortMgr,eventMgr);
-module.exports.event_post = (event, context, callback) => { preHandler(v1EventPostHandler, event,context,callback) }
+let eventPostHandler = new EventPostHandler(uPortMgr,eventMgr);
+module.exports.event_post = (event, context, callback) => { preHandler(eventPostHandler, event,context,callback) }
 
-let v1EventGetHandler = new V1EventGetHandler(uPortMgr, eventMgr);
-module.exports.event_get = (event, context, callback) => { preHandler(v1EventGetHandler, event, context, callback) }
+let eventGetHandler = new EventGetHandler(uPortMgr, eventMgr);
+module.exports.event_get = (event, context, callback) => { preHandler(eventGetHandler, event, context, callback) }
+
+let eventDeleteHandler = new EventDeleteHandler(uPortMgr, eventMgr);
+module.exports.event_delete = (event, context, callback) => { preHandler(eventDeleteHandler, event, context, callback) }
 
 const preHandler = (handler,event,context,callback) =>{
   console.log(event)
