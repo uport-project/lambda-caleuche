@@ -77,7 +77,6 @@ functions:
       - http:
          path: event
          method: get
-         integration: lambda
          request:
            template:
              application/json: >
@@ -88,7 +87,6 @@ functions:
       - http:
          path: v1/event #legacy
          method: get
-         integration: lambda
          request:
            template:
              application/json: >
