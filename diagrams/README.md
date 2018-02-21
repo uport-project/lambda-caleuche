@@ -2,12 +2,12 @@
 
 #### Contents
 
-- [V 1 Event Post Seq](#v-1-event-post-seq)
+- [Event Post Seq](#v-1-event-post-seq)
 - [How to write diagrams](#how-to-write-diagrams)
 - [How to generate diagrams](#how-to-generate-diagrams)
 
-#### V 1 Event Post Seq
-![V 1 Event Post Seq](./img/v1.event_post.seq.png)
+#### Event Post Seq
+![Event Post Seq](./img/v1.event_post.seq.png)
 
 #### How to write diagrams
 
