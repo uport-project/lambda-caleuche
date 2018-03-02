@@ -44,5 +44,9 @@
     "uport-lite": "^1.0.2",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }
