@@ -61,6 +61,11 @@ class EventMgr {
       //Read event from S3
       let evt = await this.s3Mgr.read(mnid, eventId)
 
+      //Fix old event issue
+      if (evt.iss && evt.event){
+          evt = evt.event
+      }
+
       // Add event hash to the response
       envelope.hash = eventId
       envelope.event = evt
