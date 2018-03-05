@@ -73,7 +73,7 @@ class EventPostHandler {
 
     //Store event
     try{
-      await this.eventMgr.store(mnid,eventId,payload)
+      await this.eventMgr.store(mnid,eventId,payload.event)
       console.log("event stored: "+eventId)
     } catch (error){
       console.log("Error on this.eventMgr.store")

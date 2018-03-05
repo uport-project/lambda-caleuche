@@ -105,7 +105,7 @@ class EventGetHandler {
       let subset
 
       if ( page < 2 ){
-        firstEvent = 0
+        firstEvent = 1
       } else {
         firstEvent = ( per_page * page ) - 1
       }
