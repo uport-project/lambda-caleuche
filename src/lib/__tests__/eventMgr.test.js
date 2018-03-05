@@ -109,7 +109,7 @@ describe('EventMgr', () => {
 
       let mockEnvelope = {
         hash: singleEventHash,
-        event: JSON.stringify(singleEventData)
+        event: singleEventData
       }
 
       sut.read(mnid, singleEventHash)

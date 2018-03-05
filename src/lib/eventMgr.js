@@ -58,17 +58,25 @@ class EventMgr {
 
     async read(mnid, eventId){
       let envelope = {}
+
       //Read event from S3
+      let body;
       let evt = await this.s3Mgr.read(mnid, eventId)
 
-      //Fix old event issue
-      if (evt.iss && evt.event){
-          evt = evt.event
+      try{
+        body = JSON.parse(evt)
+      } catch(e){
+        throw('error in eventMgr.read' + e.message())
+        return;
+      }
+      //Fix old events full jwt payload
+      if (body.iss && body.event){
+          body = body.event
       }
 
       // Add event hash to the response
       envelope.hash = eventId
-      envelope.event = evt
+      envelope.event = body
 
       return envelope;
     }
