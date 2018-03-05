@@ -103,11 +103,13 @@ describe('EventMgr', () => {
 
 
     test('read()', (done) =>{
-      s3Mgr.read.mockImplementation(()=>{ return Promise.resolve(JSON.stringify(singleEventData)) })
+      s3Mgr.read.mockImplementation(()=>{
+          return Promise.resolve(JSON.stringify(singleEventData))
+    })
 
       let mockEnvelope = {
         hash: singleEventHash,
-        event: JSON.stringify(singleEventData)
+        event: singleEventData
       }
 
       sut.read(mnid, singleEventHash)

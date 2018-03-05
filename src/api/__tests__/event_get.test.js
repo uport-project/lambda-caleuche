@@ -32,7 +32,8 @@ describe('EventGetHandler', () => {
         getEventsFrom: jest.fn(() => { return Promise.resolve( evtIndex.slice(2,2+6) ) }),
         getIndex: jest.fn(() => { return Promise.resolve( evtIndex ) }),
         read: jest.fn(() => {
-            return Promise.resolve(evt) })
+          return Promise.resolve({ hash: eventId, event: evt })
+        })
     }
     let validToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJpc3MiOiIyb294SjZ3V3V4UTE0aWloUU1NNHNzc2VyZVdjUEU0c1dRSCIsImlhdCI6MTUxNTcwMTA5OSwicHJldmlvdXMiOiJRbVJNdmdMSENMYmJFck5YRkgzeWJhNW1wVms2NHV5U1JBaXNNYnAyQVV0RDNKIiwiZXhwIjoxNTE1Nzg3NDk5fQ._ki2ihwOIclqCXShjbh2J0A3mNw3uHnjV5UlB4J6Y7pCImc413_wxzCP1wjQ9tN1Rfzih7GeDvL3huWUy2t9Mg"
     let eventId = "QmUVu19cZBLyHver2Aa77RMuwBnsDKSUdpmjqBu86L9dBG"
@@ -104,7 +105,7 @@ describe('EventGetHandler', () => {
       let mockedDate = new Date('2018-01-12');
       Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
       sut.eventMgr.read = jest.fn(() => {
-        return Promise.resolve(evt)
+        return Promise.resolve({ hash: eventId, event: evt })
       })
       sut.handle({
         headers: { Authorization: 'Bearer '+validToken },
@@ -123,14 +124,14 @@ describe('EventGetHandler', () => {
       let mockedDate = new Date('2018-01-12');
       Date.now = jest.genMockFunction().mockReturnValue(mockedDate)
       sut.eventMgr.read = jest.fn(() => {
-        return Promise.resolve(evt)
+        return Promise.resolve({ hash: eventId, event: evt })
       })
       sut.handle({
         headers: { Authorization: 'Bearer '+validToken },
         pathParameters: {id: eventId}
       }, {}, (err, res) => {
         expect(err).toBeNull()
-        expect(res).toEqual({events: evt } )
+        expect(res).toEqual({ events: { hash: eventId, event: evt } })
         done();
       })
     })
