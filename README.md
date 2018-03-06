@@ -3,7 +3,7 @@ Event Hub Service
 
 _The "caleuche" is a mythical ghost ship of the north Chilote mythology and local folklore of the Chiloé Island, in Chile._
 
-[![CircleCI](https://circleci.com/gh/uport-project/lambda-caleuche.svg?style=svg)](https://circleci.com/gh/uport-project/lambda-caleuche)
+[![CircleCI](https://circleci.com/gh/uport-project/lambda-caleuche.svg?style=svg&circle-token=fe36010c4a9480cd8b8f849d56d07d7633ed22ae)](https://circleci.com/gh/uport-project/lambda-caleuche)
 
 [![codecov](https://codecov.io/gh/uport-project/lambda-caleuche/branch/master/graph/badge.svg?token=fa3FnBGsDF)](https://codecov.io/gh/uport-project/lambda-caleuche)
 
