@@ -67,7 +67,7 @@ class S3Mgr {
     if (!this.bucket) throw "no bucket set";
     let params = {
       Bucket: this.bucket,
-      Delete: { Objects: index, Quiet: true }
+      Delete: { Objects: objList, Quiet: true }
     };
     let data = await this.s3.deleteObjects(params).promise();
     console.log(data);

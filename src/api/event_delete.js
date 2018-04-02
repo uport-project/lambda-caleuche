@@ -65,7 +65,6 @@ class EventDeleteHandler {
         cb({ code: 500, message: error.message });
         return;
       }
-      return;
     }
   }
 }

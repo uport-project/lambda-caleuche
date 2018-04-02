@@ -92,14 +92,16 @@ class EventMgr {
   }
 
   async delete(mnid, eventId) {
+    if (!mnid) throw "no mnid";
+
     let index = await this.getIndex(mnid);
-    if (typeof eventId === "string") {
+    if (eventId) {
       //delete a single event from storage
       await this.s3Mgr.delete(mnid, eventId);
       //remove eventId from mnix/index.json
       index = index.filter(item => item !== eventId);
       await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
-    } else if (typeof eventId === "object") {
+    } else {
       //remove all of the events (the index)
       await this.s3Mgr.deleteMultiple(
         mnid,

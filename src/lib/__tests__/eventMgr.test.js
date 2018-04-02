@@ -133,7 +133,7 @@ describe("EventMgr", () => {
     s3MgrMock.read.mockImplementation(() => {
       return Promise.resolve(JSON.stringify(evtIndex));
     });
-    sut.delete(mnid, evtIndex).then(resp => {
+    sut.delete(mnid).then(resp => {
       expect(s3MgrMock.deleteMultiple).toBeCalled();
       expect(s3MgrMock.deleteMultiple).toBeCalledWith(
         mnid,
