@@ -58,10 +58,7 @@ functions:
       - http:
           path: event
           method: delete
-          request:
-            parameters:
-              paths:
-                id: true
+
 
   event_get:
     handler: src/api_handler.event_get
