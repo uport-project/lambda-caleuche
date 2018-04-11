@@ -96,7 +96,7 @@ The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) stan
 
 
 
-### Delete event
+### Delete a single event
 `DELETE /event/{id}`
 
 #### Headers
@@ -113,7 +113,7 @@ The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) stan
 
 | Status |     Message    |                                                   |
 |:------:|----------------|---------------------------------------------------|
-| 200    | Ok.            | Event deleted                          |
+| 200    | Ok.            | Events deleted from the identity hub                        |
 | 400    | No id     | Request without `id` of the event to delete
 | 401    | Invalid auth    | Bad Authorization header or invalid token |
 | 403    | No headers     | Request without `Authorization` header or without headers at all.
@@ -121,7 +121,29 @@ The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) stan
 
 The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) standard.
 
+### Delete all
+`DELETE /event`
 
+#### Headers
+
+```
+{
+    Authorization: Bearer <jwt>
+}
+```
+
+
+
+#### Response
+
+| Status |     Message    |                                                   |
+|:------:|----------------|---------------------------------------------------|
+| 200    | Ok.            | Event(s) deleted from the identity hub                          |
+| 401    | Invalid auth    | Bad Authorization header or invalid token |
+| 403    | No headers     | Request without `Authorization` header or without headers at all.
+| 500    | Internal Error | Internal Error                                    |
+
+The response data follows the [`jsend`](https://labs.omniti.com/labs/jsend) standard.
 
 ### Sequence Diagram
 
