@@ -40,6 +40,7 @@
     "did-jwt": "^0.0.8",
     "ethr-did-resolver": "^0.0.8",
     "multi-hash": "^0.1.1",
+    "muport-did-resolver": "^0.1.0",
     "serverless-kms-secrets": "^1.0.2",
     "serverless-webpack": "^3.1.0",
     "uport-did-resolver": "^0.0.2",

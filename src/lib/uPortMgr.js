@@ -1,5 +1,6 @@
 require('ethr-did-resolver')()
 require('uport-did-resolver')()
+require('muport-did-resolver')()
 import { verifyJWT } from "did-jwt/lib/JWT";
 
 class UportMgr {
