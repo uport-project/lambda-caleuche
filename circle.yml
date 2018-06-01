@@ -17,10 +17,6 @@ test:
     - bash <(curl -s https://codecov.io/bash)
 
 deployment:
-  feature:
-    branch: /wf.*/
-    commands:
-      - sls deploy --stage develop
   develop:
     branch:
       - develop
