@@ -63,8 +63,6 @@ class EventGetHandler {
       let perPage;
       let events = [];
 
-      let params = event.pathParameters;
-
       if (event.page && event.per_page) {
         page = event.page;
         perPage = event.per_page;
@@ -76,7 +74,6 @@ class EventGetHandler {
 
       try {
         let eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous);
-        console.log("number of events fetched", eventsFrom.length);
         paginatedIndex = await this.paginate(eventsFrom, page, perPage);
         for (let i = 0; i < paginatedIndex.length; i++) {
           try {
@@ -99,17 +96,16 @@ class EventGetHandler {
     }
   }
 
-  async paginate(events, page = 1, per_page = 100) {
-    let firstEvent;
+  async paginate(events, page = 1, perPage = 50) {
+    let first;
     let subset;
 
     if (page < 2) {
-      firstEvent = 1;
+      first = 1;
     } else {
-      firstEvent = per_page * page - 1;
+      first = perPage * page - 1;
     }
-    console.log("events previous to slicing");
-    subset = events.slice(firstEvent - 1, firstEvent - 1 + per_page);
+    subset = events.slice(first - 1, first - 1 + perPage);
     return subset;
   }
 }
