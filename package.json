@@ -32,7 +32,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "jest": "^21.2.0",
-    "serverless-content-encoding": "^1.0.22",
+    "serverless-api-compression": "^1.0.1",
     "serverless-offline": "^3.16.0"
   },
   "dependencies": {

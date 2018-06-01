@@ -96,7 +96,7 @@ class EventGetHandler {
     }
   }
 
-  async paginate(events, page = 1, perPage = 50) {
+  async paginate(events, page, perPage) {
     let first;
     let subset;
 
