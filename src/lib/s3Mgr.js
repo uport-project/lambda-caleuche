@@ -22,7 +22,7 @@ class S3Mgr {
       Key: fullKey
     };
     let obj = await this.s3.getObject(params).promise();
-    console.log(obj.Body.toString("utf-8"));
+    //console.log(obj.Body.toString("utf-8"));
     return obj.Body.toString("utf-8");
   }
 

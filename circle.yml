@@ -6,7 +6,7 @@ dependencies:
   pre:
     - sudo apt-get update
   override:
-    - npm install --no-optional
+    - yarn
     - npm install -g serverless@1.24.1
     - npm install -g codecov
 

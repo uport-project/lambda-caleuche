@@ -4341,6 +4341,10 @@ secp256k1@^3.0.1:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
+serverless-api-compression@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/serverless-api-compression/-/serverless-api-compression-1.0.1.tgz#10e3d320638011cf88bc5a4314dfbdcce68013fa"
+
 serverless-kms-secrets@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/serverless-kms-secrets/-/serverless-kms-secrets-1.0.2.tgz#ac930030a981d1b117e6c9a242ede75997514966"

@@ -23,6 +23,7 @@ plugins:
   - serverless-webpack
   - serverless-kms-secrets
   - serverless-offline
+  - serverless-api-compression
 
 # Enable auto-packing of external modules
 custom:
@@ -30,6 +31,7 @@ custom:
   serverless-kms-secrets:
     secretsFile: kms-secrets.${opt:stage, self:provider.stage}.${opt:region, self:provider.region}.yml
   kmsSecrets: ${file(kms-secrets.${opt:stage, self:provider.stage}.${opt:region, self:provider.region}.yml)}
+  contentCompression: 1024
 
 functions:
 
