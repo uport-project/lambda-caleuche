@@ -20,7 +20,7 @@ deployment:
   feature:
     branch: /wf.*/
     commands:
-      - sls package
+      - sls deploy --stage develop
   develop:
     branch:
       - develop
