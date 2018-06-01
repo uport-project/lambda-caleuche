@@ -63,6 +63,7 @@ functions:
   event_get:
     handler: src/api_handler.event_get
     description: Get an event, a paginated subset or all of the events belonging to an user
+    timeout: 30
     events:
       - http:
          path: event/{id}
