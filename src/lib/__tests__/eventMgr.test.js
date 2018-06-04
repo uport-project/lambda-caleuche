@@ -118,6 +118,23 @@ describe("EventMgr", () => {
     });
   });
 
+  test("store()", done => {
+    s3MgrMock.read.mockImplementation(() => {
+      return Promise.resolve(JSON.stringify(evtIndex));
+    });
+
+    s3MgrMock.store.mockImplementation(() => {
+      return Promise.resolve("ok");
+    });
+
+    sut
+      .store(mnid, singleEventHash, singleEventHash, singleEventData)
+      .then(resp => {
+        expect(resp).toEqual([...evtIndex, singleEventHash]);
+        done();
+      });
+  });
+
   test("delete() single", done => {
     s3MgrMock.read.mockImplementation(() => {
       return Promise.resolve(JSON.stringify(evtIndex));
