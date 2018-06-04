@@ -7,14 +7,12 @@ class EventMgr {
   }
 
   async getIndex(mnid) {
-    let index;
+    let index = [];
     try {
       let rawIndex = await this.s3Mgr.read(mnid, "index.json");
       index = JSON.parse(rawIndex);
     } catch (err) {
-      if (err.code == "NoSuchKey") {
-        index = [];
-      } else {
+      if (err.code !== "NoSuchKey") {
         throw err;
       }
     }
@@ -44,7 +42,7 @@ class EventMgr {
     //Get from mnid/index.json
     let index = await this.getIndex(mnid);
 
-    return index.length == 0 ? null : index[index.length - 1];
+    return index.length === 0 ? null : index[index.length - 1];
   }
 
   async getId(eventData) {
@@ -65,7 +63,6 @@ class EventMgr {
       body = JSON.parse(evt);
     } catch (e) {
       throw "error in eventMgr.read" + e.message();
-      return;
     }
     //Fix old events full jwt payload
     if (body.iss && body.event) {
@@ -84,11 +81,11 @@ class EventMgr {
     await this.s3Mgr.store(mnid, eventId, JSON.stringify(eventData));
 
     //Add eventId to mnid/index.json
-    let index = await this.getIndex(mnid);
-    index.push(eventId);
+    let index = (await this.getIndex(mnid)) || [];
+    index = [...index, eventId];
     await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
 
-    return;
+    return index;
   }
 
   async delete(mnid, eventId) {
