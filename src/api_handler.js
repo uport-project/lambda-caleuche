@@ -19,6 +19,9 @@ const doHandler = (handler, event, context, callback) => {
     if (err == null) {
       response = {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
         body: JSON.stringify({
           status: "success",
           data: resp
