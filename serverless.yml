@@ -23,6 +23,7 @@ plugins:
   - serverless-webpack
   - serverless-kms-secrets
   - serverless-offline
+  - serverless-api-compression
 
 # Enable auto-packing of external modules
 custom:
@@ -30,6 +31,7 @@ custom:
   serverless-kms-secrets:
     secretsFile: kms-secrets.${opt:stage, self:provider.stage}.${opt:region, self:provider.region}.yml
   kmsSecrets: ${file(kms-secrets.${opt:stage, self:provider.stage}.${opt:region, self:provider.region}.yml)}
+  contentCompression: 1024
 
 functions:
 
@@ -55,10 +57,15 @@ functions:
             parameters:
               paths:
                 id: true
+      - http:
+          path: event
+          method: delete
+
 
   event_get:
     handler: src/api_handler.event_get
     description: Get an event, a paginated subset or all of the events belonging to an user
+    timeout: 30
     events:
       - http:
          path: event/{id}
