@@ -81,7 +81,13 @@ class EventMgr {
     await this.s3Mgr.store(mnid, eventId, JSON.stringify(eventData));
 
     //Add eventId to mnid/index.json
-    let index = (await this.getIndex(mnid)) || [];
+    let index;
+    try {
+      index = await this.getIndex(mnid);
+    } catch (error) {
+      console.log("Error on this.getIndex", error);
+      index = [];
+    }
     index = [...index, eventId];
     await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
 
