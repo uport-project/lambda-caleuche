@@ -42,9 +42,11 @@ functions:
       - http:
          path: v1/event #legacy
          method: post
+         cors: true
       - http:
          path: event
          method: post
+         cors: true
 
   event_delete:
     handler: src/api_handler.event_delete
@@ -53,6 +55,7 @@ functions:
       - http:
           path: event/{id}
           method: delete
+          cors: true
           request:
             parameters:
               paths:
@@ -60,6 +63,7 @@ functions:
       - http:
           path: event
           method: delete
+          cors: true
 
 
   event_get:
