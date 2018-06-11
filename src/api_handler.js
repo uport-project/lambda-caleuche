@@ -39,6 +39,12 @@ const doHandler = (handler, event, context, callback) => {
 
       response = {
         statusCode: code,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Headers": "snaphuntjwttoken",
+          "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT"
+        },
         body: JSON.stringify({
           status: "error",
           message: message
