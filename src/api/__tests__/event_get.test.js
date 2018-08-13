@@ -164,9 +164,16 @@ describe("EventGetHandler", () => {
     });
   });
 
-  test("handle pagination without parameters", done => {
+  test("handle pagination without page and perPage parameters", done => {
     let index = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     sut.paginate(index).then(resp => {
+      expect(resp).toEqual(index);
+      done();
+    });
+  });
+
+  test("handle pagination without any parameters", done => {
+    sut.paginate().then(resp => {
       expect(resp).toEqual([]);
       done();
     });
