@@ -178,4 +178,12 @@ describe("EventGetHandler", () => {
       done();
     });
   });
+
+  test("handle pagination with a non-array", done => {
+    let obj = { object: "notarray" };
+    sut.paginate(obj).then(resp => {
+      expect(resp).toEqual(obj);
+      done();
+    });
+  });
 });
