@@ -1,6 +1,6 @@
 {
   "name": "lambda-caleuche",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "uPort Event Hub Service",
   "main": "index.js",
   "scripts": {
