@@ -96,21 +96,21 @@ class EventGetHandler {
     }
   }
 
-  async paginate(events, page, perPage) {
-    if (!events) events = [];
-    if (!page) page = 1;
-    if (!perPage) perPage = 100;
-
+  async paginate(events = [], page = 1, perPage = 100) {
     let first;
     let subset;
 
-    if (page < 2) {
-      first = 1;
+    if (Array.isArray(events)) {
+      if (page < 2) {
+        first = 1;
+      } else {
+        first = perPage * page - 1;
+      }
+      subset = events.slice(first - 1, first - 1 + perPage);
+      return subset;
     } else {
-      first = perPage * page - 1;
+      return events;
     }
-    subset = events.slice(first - 1, first - 1 + perPage);
-    return subset;
   }
 }
 
