@@ -88,9 +88,10 @@ class EventMgr {
       console.log("Error on this.getIndex", error);
       index = [];
     }
-    index = [...index, eventId];
-    await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
-
+    if (Array.isArray(index)) {
+      index = [...index, eventId];
+      await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
+    }
     return index;
   }
 
