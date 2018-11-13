@@ -38,120 +38,196 @@ describe("S3Mgr", () => {
     expect(secretSet).toEqual(false);
   });
 
-  test("store() no mnid", done => {
-    sut
-      .store(null, eventId, event)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no key");
-        done();
-      });
+  describe("read()", () => {
+    
+    test("no key", done => {
+      sut
+        .read(null, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no key");
+          done();
+        });
+    });
+  
+    test("no filename", done => {
+      sut
+        .read(mnid, null)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no filename");
+          done();
+        });
+    });
+
+    test("no bucket set", done => {
+      sut
+        .read(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+
+
+  
+  })
+
+  
+
+  describe("store()", () => {
+
+    test("no key", done => {
+      sut
+        .store(null, eventId, event)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no key");
+          done();
+        });
+    });
+  
+    test("no filename", done => {
+      sut
+        .store(mnid, null, event)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no filename");
+          done();
+        });
+    });
+  
+    test("no data", done => {
+      sut
+        .store(mnid, eventId, null)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no data");
+          done();
+        });
+    });
+  
+    test("no bucket set", done => {
+      sut
+        .store(mnid, eventId, event)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+      
   });
 
-  test("store() no eventId", done => {
-    sut
-      .store(mnid, null, event)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no filename");
-        done();
-      });
+
+  describe("delete()", () => {
+
+    test("no key", done => {
+      sut
+        .store(null)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no key");
+          done();
+        });
+    });
+  
+    test("no filename", done => {
+      sut
+        .delete(mnid, null)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no filename");
+          done();
+        });
+    });
+  
+    test("no bucket set", done => {
+      sut
+        .delete(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+  
+
+  })
+
+  describe("deleteMultiple()", () => {
+
+    test("no  key", done => {
+      sut
+        .deleteMultiple()
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no key");
+          done();
+        });
+    });
+  
+    test("no object list", done => {
+      sut
+        .deleteMultiple(mnid)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no object list");
+          done();
+        });
+    });
+
+    test("no bucket set", done => {
+      sut
+        .deleteMultiple(mnid, [])
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+  
   });
 
-  test("store() no event", done => {
-    sut
-      .store(mnid, eventId, null)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no data");
-        done();
-      });
-  });
 
-  test("store() no bucket set", done => {
-    sut
-      .store(mnid, eventId, event)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no bucket set");
-        done();
-      });
-  });
-
-  test("delete() no mnid", done => {
-    sut
-      .store(null)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no key");
-        done();
-      });
-  });
-
-  test("delete() no filename", done => {
-    sut
-      .delete(mnid, null)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no filename");
-        done();
-      });
-  });
-
-  test("delete() no bucket set", done => {
-    sut
-      .delete(mnid, eventId)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no bucket set");
-        done();
-      });
-  });
-
-  test("deleteMultiple() no  key", done => {
-    sut
-      .deleteMultiple()
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no key");
-        done();
-      });
-  });
-
-  test("deleteMultiple() no object list", done => {
-    sut
-      .deleteMultiple(mnid)
-      .then(resp => {
-        fail("shouldn't return");
-        done();
-      })
-      .catch(err => {
-        expect(err).toEqual("no object list");
-        done();
-      });
-  });
 });
