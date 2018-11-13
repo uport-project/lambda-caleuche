@@ -18,6 +18,7 @@ class S3Mgr {
   async read(key, filename, createIfNotExists = false) {
     if (!key) throw "no key";
     if (!filename) throw "no filename";
+    if (!this.bucket) throw "no bucket set";
     
     let fullKey = key + "/" + filename;
     let params = {
