@@ -57,9 +57,6 @@ describe("EventGetHandler", () => {
 
   beforeAll(() => {
     sut = new EventGetHandler(uportMgrMock, eventMgrMock);
-    let mockedDate = new Date("2018-01-12");
-    Date.now = jest.genMockFunction().mockReturnValue(mockedDate);
-    
   });
 
   test("empty constructor", () => {
@@ -151,9 +148,6 @@ describe("EventGetHandler", () => {
 
 
   test("single event happy path", done => {
-    sut.eventMgr.read = jest.fn(() => {
-      return Promise.resolve({ hash: eventId, event: evt });
-    });
     sut.handle(
       {
         headers: { Authorization: "Bearer " + validToken },

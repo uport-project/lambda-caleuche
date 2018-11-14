@@ -18,7 +18,7 @@ describe('EventPostHandler', () => {
       }
 
 
-    let uPortMgrMock = {
+    let uportMgrMock = {
         verifyToken: jest.fn( (token) => {
           return Promise.resolve({ payload: validTokenPayload })
         })
@@ -36,7 +36,7 @@ describe('EventPostHandler', () => {
     
 
     beforeAll(() => {
-      sut = new EventPostHandler(uPortMgrMock, eventMgrMock);
+      sut = new EventPostHandler(uportMgrMock, eventMgrMock);
     });
 
     test('empty constructor', () => {
@@ -62,7 +62,7 @@ describe('EventPostHandler', () => {
     })
 
     test('handle invalid token', done => {
-        uPortMgrMock.verifyToken.mockImplementationOnce( (token) => {
+        uportMgrMock.verifyToken.mockImplementationOnce( (token) => {
             return Promise.reject("bad token")
         });
         sut.handle({body: JSON.stringify({event_token: 'a.s.df'})},{},(err,res)=>{
@@ -74,7 +74,7 @@ describe('EventPostHandler', () => {
     })
 
     test('handle no event', done => {
-        uPortMgrMock.verifyToken.mockImplementationOnce( (token) => {
+        uportMgrMock.verifyToken.mockImplementationOnce( (token) => {
             return Promise.resolve({ payload: {} })
         });
         sut.handle({ body: JSON.stringify({ event_token: eventToken })}, {}, (err, res) => {
