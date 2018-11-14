@@ -22,11 +22,6 @@ describe("S3Mgr", () => {
 
   beforeAll(() => {
     sut = new S3Mgr();
-    sut.s3 = {
-      deleteObjects: jest.fn(() => {
-        return Promise.resolve("ok");
-      })
-    };
   });
 
   test("empty constructor", () => {
@@ -37,6 +32,70 @@ describe("S3Mgr", () => {
     let secretSet = sut.isSecretsSet();
     expect(secretSet).toEqual(false);
   });
+
+  describe("no bucket set", () => {
+
+    test("read()", done => {
+      sut
+        .read(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+
+    test("store()", done => {
+      sut
+        .store(mnid, eventId, event)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+
+    test("delete()", done => {
+      sut
+        .delete(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+
+    test("deleteMultiple()", done => {
+      sut
+        .deleteMultiple(mnid, [])
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("no bucket set");
+          done();
+        });
+    });
+  })
+
+  test("setSecrets", () => {
+    expect(sut.isSecretsSet()).toEqual(false);
+    sut.setSecrets({ BUCKET: bucket });
+    expect(sut.isSecretsSet()).toEqual(true);
+    expect(sut.bucket).not.toBeUndefined();
+    expect(sut.bucket).toEqual(bucket);
+  });
+
 
   describe("read()", () => {
     
@@ -66,19 +125,7 @@ describe("S3Mgr", () => {
         });
     });
 
-    test("no bucket set", done => {
-      sut
-        .read(mnid, eventId)
-        .then(resp => {
-          fail("shouldn't return");
-          done();
-        })
-        .catch(err => {
-          expect(err).toEqual("no bucket set");
-          done();
-        });
-    });
-
+    
 
   
   })
@@ -126,18 +173,7 @@ describe("S3Mgr", () => {
         });
     });
   
-    test("no bucket set", done => {
-      sut
-        .store(mnid, eventId, event)
-        .then(resp => {
-          fail("shouldn't return");
-          done();
-        })
-        .catch(err => {
-          expect(err).toEqual("no bucket set");
-          done();
-        });
-    });
+    
       
   });
 
@@ -170,18 +206,7 @@ describe("S3Mgr", () => {
         });
     });
   
-    test("no bucket set", done => {
-      sut
-        .delete(mnid, eventId)
-        .then(resp => {
-          fail("shouldn't return");
-          done();
-        })
-        .catch(err => {
-          expect(err).toEqual("no bucket set");
-          done();
-        });
-    });
+    
   
 
   })
@@ -214,18 +239,7 @@ describe("S3Mgr", () => {
         });
     });
 
-    test("no bucket set", done => {
-      sut
-        .deleteMultiple(mnid, [])
-        .then(resp => {
-          fail("shouldn't return");
-          done();
-        })
-        .catch(err => {
-          expect(err).toEqual("no bucket set");
-          done();
-        });
-    });
+    
   
   });
 
