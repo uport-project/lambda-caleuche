@@ -5,15 +5,19 @@ class EventDeleteHandler {
   }
 
   async handle(event, context, cb) {
+    //Check if headers are there
     if (!event.headers) {
       cb({ code: 403, message: "no headers" });
       return;
     }
+    
+    //Check if Authorization header is there
     if (!event.headers["Authorization"]) {
       cb({ code: 403, message: "no authorization header" });
       return;
     }
-
+    
+    //Parsing Authorization header
     let authHead = event.headers["Authorization"];
 
     let parts = authHead.split(" ");
@@ -27,6 +31,7 @@ class EventDeleteHandler {
       return;
     }
 
+    //Check token signature
     let payload;
     try {
       let dtoken = await this.uPortMgr.verifyToken(parts[1]);
@@ -40,6 +45,7 @@ class EventDeleteHandler {
 
     let mnid = payload.iss;
 
+    //Check if retrieving one event or multiple
     if (event.pathParameters && event.pathParameters.id) {
       let eventId;
       let evt;
@@ -55,6 +61,7 @@ class EventDeleteHandler {
         return;
       }
     } else {
+      //Delete all
       try {
         await this.eventMgr.delete(mnid);
         cb(null);
