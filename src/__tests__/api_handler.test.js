@@ -21,4 +21,21 @@ describe('apiHandler', () => {
         })
     });
 
+    test('event_get()', done => {
+        apiHandler.event_get({},{},(err,res)=>{
+            expect(err).toBeNull()
+            expect(res).not.toBeNull()
+
+            done();
+        })
+    });
+
+    test('event_delete()', done => {
+        apiHandler.event_delete({},{},(err,res)=>{
+            expect(err).toBeNull()
+            expect(res).not.toBeNull()
+
+            done();
+        })
+    });
 });

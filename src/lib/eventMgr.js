@@ -7,6 +7,7 @@ class EventMgr {
   }
 
   async getIndex(mnid) {
+    if (!mnid) throw "no mnid";
     let index = [];
     try {
       let rawIndex = await this.s3Mgr.read(mnid, "index.json");
@@ -53,16 +54,18 @@ class EventMgr {
   }
 
   async read(mnid, eventId) {
+    if (!mnid) throw "no mnid";
+    if (!eventId) throw "no eventId";
+
     let envelope = {};
 
     //Read event from S3
     let body;
-    let evt = await this.s3Mgr.read(mnid, eventId);
-
     try {
+      let evt = await this.s3Mgr.read(mnid, eventId);
       body = JSON.parse(evt);
     } catch (e) {
-      throw "error in eventMgr.read" + e.message();
+      throw e
     }
     //Fix old events full jwt payload
     if (body.iss && body.event) {
@@ -88,6 +91,7 @@ class EventMgr {
       console.log("Error on this.getIndex", error);
       index = [];
     }
+
     index = [...index, eventId];
     await this.s3Mgr.store(mnid, "index.json", JSON.stringify(index));
 

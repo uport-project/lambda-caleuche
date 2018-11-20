@@ -15,6 +15,9 @@ This lambda functions allow the backup and sync of uPort mobile app events.
 
 ![Caleuche bad recreation](https://i.ytimg.com/vi/dn9PpNy7GL4/maxresdefault.jpg)
 
+
+If you want to run your own instance, please see  [RUN_INSTANCE.md](./RUN_INSTANCE.md)
+
 ## API Description
 
 ### Post Event
