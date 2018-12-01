@@ -60,16 +60,28 @@ const preHandler = (handler, event, context, callback) => {
   //console.log(event)
   if (!s3Mgr.isSecretsSet()) {
     const kms = new AWS.KMS();
-    kms
-      .decrypt({
-        CiphertextBlob: Buffer(process.env.SECRETS, "base64")
-      })
-      .promise()
-      .then(data => {
-        const decrypted = String(data.Plaintext);
-        s3Mgr.setSecrets(JSON.parse(decrypted));
-        doHandler(handler, event, context, callback);
-      });
+    try {
+      // If SECRETS is unencrypted, it will be in JSON format
+      let secrets = JSON.parse(process.env.SECRETS);
+      s3Mgr.setSecrets(secrets);
+      doHandler(handler, event, context, callback);
+    } catch (err) {
+      // If SECRETS is encrypted, use KMS to decrypt
+      if (err instanceof SyntaxError) {
+        kms
+        .decrypt({
+          CiphertextBlob: Buffer(process.env.SECRETS, "base64")
+        })
+        .promise()
+        .then(data => {
+          const decrypted = String(data.Plaintext);
+          s3Mgr.setSecrets(JSON.parse(decrypted));
+          doHandler(handler, event, context, callback);
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+    }
   } else {
     doHandler(handler, event, context, callback);
   }

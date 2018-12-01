@@ -53,7 +53,7 @@ You need to set the following variables
 ```
 sls encrypt -n SECRETS:BUCKET -v <bucket_name> -k <keyId>
 ```
-This will create `kms-secrets-develop.<region>.yml` fiile
+This will create `kms-secrets-develop.<region>.yml` file
 
 If you want to create a secrets file for `master` stage 
 ```
