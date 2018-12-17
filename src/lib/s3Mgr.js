@@ -25,8 +25,11 @@ class S3Mgr {
       Bucket: this.bucket,
       Key: fullKey
     };
-    let obj = await this.s3.getObject(params).promise();
-    //console.log(obj.Body.toString("utf-8"));
+    let obj = await this.s3.getObject(params)
+      .promise()
+      .catch(err => {
+        throw("credentials not passed")
+      });
     return obj.Body.toString("utf-8");
   }
 
@@ -43,8 +46,11 @@ class S3Mgr {
       Key: fullKey,
       Body: data
     };
-    let obj = await this.s3.putObject(params).promise();
-    console.log(obj);
+    let obj = await this.s3.putObject(params)
+      .promise()
+      .catch(err => {
+        throw("credentials not passed");
+      });
     return obj;
   }
 
@@ -56,11 +62,13 @@ class S3Mgr {
     let fullKey = key + "/" + filename;
     let params = {
       Bucket: this.bucket,
-      Key: fullKey,
-      Body: data
+      Key: fullKey
     };
-    let data = await this.s3.deleteObject(params).promise();
-    console.log(data);
+    let data = await this.s3.deleteObject(params)
+      .promise()
+      .catch(err => {
+        throw("credentials not passed");
+      });
     return data;
   }
 
@@ -73,8 +81,11 @@ class S3Mgr {
       Bucket: this.bucket,
       Delete: { Objects: objList, Quiet: true }
     };
-    let data = await this.s3.deleteObjects(params).promise();
-    console.log(data);
+    let data = await this.s3.deleteObjects(params)
+      .promise()
+      .catch(err => {
+        throw("credentials not passed");
+      });
     return data;
   }
 }
