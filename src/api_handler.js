@@ -12,6 +12,7 @@ const EventDeleteHandler = require("./api/event_delete");
 let s3Mgr = new S3Mgr();
 let eventMgr = new EventMgr(s3Mgr);
 let uPortMgr = new UportMgr();
+let setSecret = '';
 
 const doHandler = (handler, event, context, callback) => {
   handler.handle(event, context, (err, resp) => {
@@ -31,11 +32,8 @@ const doHandler = (handler, event, context, callback) => {
         })
       };
     } else {
-      //console.log(err);
-      let code = 500;
-      if (err.code) code = err.code;
-      let message = err;
-      if (err.message) message = err.message;
+      let code = err.code;
+      let message = err.message;
 
       response = {
         statusCode: code,
@@ -58,16 +56,15 @@ const doHandler = (handler, event, context, callback) => {
 
 const preHandler = (handler, event, context, callback) => {
   //console.log(event)
-  if (!s3Mgr.isSecretsSet()) {
+  if (!s3Mgr.isSecretsSet() || setSecret !== process.env.SECRETS) {
     const kms = new AWS.KMS();
+    setSecret = process.env.SECRETS;
     try {
       // If SECRETS is unencrypted, it will be in JSON format
       let secrets = JSON.parse(process.env.SECRETS);
       s3Mgr.setSecrets(secrets);
       doHandler(handler, event, context, callback);
     } catch (err) {
-      // If SECRETS is encrypted, use KMS to decrypt
-      if (err instanceof SyntaxError) {
         kms
         .decrypt({
           CiphertextBlob: Buffer(process.env.SECRETS, "base64")
@@ -77,10 +74,10 @@ const preHandler = (handler, event, context, callback) => {
           const decrypted = String(data.Plaintext);
           s3Mgr.setSecrets(JSON.parse(decrypted));
           doHandler(handler, event, context, callback);
-        }).catch(err => {
-          console.log(err);
+        })
+        .catch(err => {
+          callback(err, null);
         });
-      }
     }
   } else {
     doHandler(handler, event, context, callback);
