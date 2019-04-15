@@ -11,6 +11,7 @@ class EventMgr {
     let index = [];
     try {
       let rawIndex = await this.s3Mgr.read(mnid, "index.json");
+      if(rawIndex=="{}") rawIndex="[]"; //Why this happen?
       index = JSON.parse(rawIndex);
     } catch (err) {
       if (err.code !== "NoSuchKey") {

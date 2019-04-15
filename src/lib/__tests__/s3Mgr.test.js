@@ -1,14 +1,31 @@
+import AWS from "aws-sdk";
+import MockAWS from "aws-sdk-mock";
+MockAWS.setSDKInstance(AWS);
 const S3Mgr = require("../s3Mgr");
+
+MockAWS.mock('S3', 'getObject', () => {});
+MockAWS.mock('S3', 'putObject', () => {});
+MockAWS.mock('S3', 'deleteObject', () => {});
+MockAWS.mock('S3', 'deleteObjects', () => {});
+MockAWS.restore('S3', 'getObject');
+MockAWS.restore('S3', 'putObject');
+MockAWS.restore('S3', 'deleteObject');
+MockAWS.restore('S3', 'deleteObjects');
 
 describe("S3Mgr", () => {
   let sut;
   let mnid = "2fakemnid";
   let eventId = "2eventId";
   let bucket = "fakebucket";
-  let event = {
-    previous: "previousId",
-    event: "event data"
-  };
+  let event = '{"previous": "previousId", "event": "event data"}';
+  let eventList = [{
+      Key: eventId
+    },
+      {
+        Key: eventId
+      }
+    ];
+
   let evtIndex = [
     "QmRqAU4MGHrm7sj89UPwZZ2sfJ2suL758hc8mTyB1sfQ6r",
     "QmRWjSDMuMPuPvysjddGLxZH88Rt3v316bA1S7tFMzXP6A",
@@ -22,6 +39,7 @@ describe("S3Mgr", () => {
 
   beforeAll(() => {
     sut = new S3Mgr();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   });
 
   test("empty constructor", () => {
@@ -125,10 +143,20 @@ describe("S3Mgr", () => {
         });
     });
 
-    
-
+    test("AWS credentials error", done => {
+      sut
+        .read(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("credentials not passed");
+          done();
+        });
+    });
   
-  })
+  });
 
   
 
@@ -172,8 +200,19 @@ describe("S3Mgr", () => {
           done();
         });
     });
-  
-    
+
+    test("AWS credentials error", done => {
+      sut
+        .store(mnid, eventId, event)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("credentials not passed");
+          done();
+        });
+    });
       
   });
 
@@ -182,7 +221,7 @@ describe("S3Mgr", () => {
 
     test("no key", done => {
       sut
-        .store(null)
+        .delete(null, eventId)
         .then(resp => {
           fail("shouldn't return");
           done();
@@ -205,15 +244,25 @@ describe("S3Mgr", () => {
           done();
         });
     });
-  
-    
-  
 
-  })
+    test("AWS credentials error", done => {
+      sut
+        .delete(mnid, eventId)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("credentials not passed");
+          done();
+        });
+    });
+
+  });
 
   describe("deleteMultiple()", () => {
 
-    test("no  key", done => {
+    test("no key", done => {
       sut
         .deleteMultiple()
         .then(resp => {
@@ -239,9 +288,86 @@ describe("S3Mgr", () => {
         });
     });
 
-    
+    test("AWS credentials error", done => {
+      sut
+        .deleteMultiple(mnid, eventList)
+        .then(resp => {
+          fail("shouldn't return");
+          done();
+        })
+        .catch(err => {
+          expect(err).toEqual("credentials not passed");
+          done();
+        });
+    });
   
   });
 
+  describe.skip("Every operation without error", () => {
+
+    beforeEach(() => {
+      MockAWS.mock("S3", "getObject", Promise.resolve({ Body: 'data' }));
+      MockAWS.mock("S3", "putObject", Promise.resolve({ Body: 'data' }));
+      MockAWS.mock("S3", "deleteObject", Promise.resolve({}));
+      MockAWS.mock('S3', 'deleteObjects', Promise.resolve({}));
+      sut.setSecrets({ BUCKET: bucket });
+    });
+
+    test("read without error", done => {
+      sut
+        .read(mnid, eventId)
+        .then(resp => {
+          expect(resp).toEqual('data');
+          done();
+        })
+        .catch(err => {
+          fail(err);
+          done();
+        });
+    });
+
+    test("store without error", done => {
+      sut
+        .store(mnid, eventId, event)
+        .then(resp => {
+          expect(resp).toEqual({ Body: 'data'});
+          done();
+        })
+        .catch(err => {
+          fail(err);
+          done();
+        });
+    });
+
+    test("delete without error", done => {
+      sut
+        .delete(mnid, eventId)
+        .then(resp => {
+          expect(resp).not.toBeNull();
+          done();
+        })
+        .catch(err => {
+          fail(err);
+          done();
+        });
+    });
+
+    test("deleteMultiple without error", done => {
+      sut
+        .deleteMultiple(mnid, eventList)
+        .then(resp => {
+          expect(resp).not.toBeNull();
+          done();
+        })
+        .catch(err => {
+          fail(err);
+          done();
+        });
+    });
+
+    afterAll(() => {
+      MockAWS.restore();
+    })
+  });
 
 });

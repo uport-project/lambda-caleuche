@@ -65,3 +65,7 @@ typings/
 sample_events/
 
 .DS_Store
+
+dist/
+
+aws-secrets.js
