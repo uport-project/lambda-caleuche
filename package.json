@@ -40,14 +40,14 @@
   "dependencies": {
     "aws-sdk": "^2.175.0",
     "crypto-js": "^3.1.9-1",
-    "did-jwt": "^0.0.8",
-    "ethr-did-resolver": "^0.0.8",
+    "did-jwt": "^0.1.2",
+    "ethr-did-resolver": "^0.2.0",
     "express": "^4.16.4",
     "multi-hash": "^0.1.1",
-    "muport-did-resolver": "^0.1.0",
+    "nacl-did": "^0.4.0",
     "serverless-kms-secrets": "^1.0.2",
     "serverless-webpack": "^3.1.0",
-    "uport-did-resolver": "^0.0.2",
+    "uport-did-resolver": "0.0.6",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0"
   },

@@ -1,13 +1,14 @@
-require('ethr-did-resolver')()
-require('uport-did-resolver')()
-require('muport-did-resolver')()
-import { verifyJWT } from "did-jwt/lib/JWT";
+const didJWT = require("did-jwt")
+require('ethr-did-resolver').default();
+require('uport-did-resolver').default();
+
+require('nacl-did').registerNaclDID();
 
 class UportMgr {
 
   async verifyToken(token) {
     if (!token) throw "no token";
-    return verifyJWT(token);
+    return didJWT.verifyJWT(token);
   }
 }
 module.exports = UportMgr;

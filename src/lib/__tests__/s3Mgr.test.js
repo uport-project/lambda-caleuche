@@ -303,7 +303,7 @@ describe("S3Mgr", () => {
   
   });
 
-  describe("Every operation without error", () => {
+  describe.skip("Every operation without error", () => {
 
     beforeEach(() => {
       MockAWS.mock("S3", "getObject", Promise.resolve({ Body: 'data' }));
