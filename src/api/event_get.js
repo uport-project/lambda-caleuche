@@ -47,13 +47,19 @@ class EventGetHandler {
     let mnid = payload.iss;
     let previous = payload.previous;
 
+    console.log("MNID:" +mnid)
+    console.log("previous:" +previous)
+
     //Check if retrieving one event or multiple
     if (event.pathParameters && event.pathParameters.id) {
-
+    
       //Single event
       let eventId;
       let evt;
       eventId = event.pathParameters.id;
+
+      console.log("Getting eventId:" +eventId)
+
       try {
         evt = await this.eventMgr.read(mnid, eventId);
         cb(null, { events: evt });
@@ -66,11 +72,12 @@ class EventGetHandler {
       }
 
     } else {
-      
+      console.log("Getting all events");
+
       //Fetch all the events since the previous
       let paginatedIndex;
       let evt;
-      let page;
+      let pagepage;
       let perPage;
       let events = [];
 
@@ -82,35 +89,43 @@ class EventGetHandler {
         page = 1;
         perPage = 100;
       }
+      console.log("page:"+page);
+      console.log("perPage:"+perPage);
 
+      let eventsFrom;
       try {
         //Get events since previous for mnid
-        let eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous);
-
-        //Paginate
-        //TODO: Change paginate to eventMgr.getEventsFrom()
-        paginatedIndex = await this.paginate(eventsFrom, page, perPage);
-
-        //Loop thru index and read events.
-        for (let i = 0; i < paginatedIndex.length; i++) {
-          try {
-            //TODO: Change to parallel Promise processing (Promise.all())
-            evt = await this.eventMgr.read(mnid, paginatedIndex[i]);
-            events.push(evt);
-          } catch (error) {
-            console.log("Error on this.eventMgr.read");
-            console.log(error);
-            cb({ code: 500, message: error.message });
-            return;
-          }
-        }
-        cb(null, { events: events, total: eventsFrom.length });
-      } catch (error) {
-        console.log("Error on this.eventMgr.getIndex");
+        eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous);
+      }catch(err){
+        console.log("Error on this.eventMgr.getEventsFrom");
         console.log(error);
         cb({ code: 500, message: error.message });
         return;
       }
+      console.log("eventsFrom:"+eventsFrom);
+
+      //Paginate
+      //TODO: Change paginate to eventMgr.getEventsFrom()
+      paginatedIndex = await this.paginate(eventsFrom, page, perPage);
+      console.log("paginatedIndex:"+paginatedIndex);
+
+      //Loop thru index and read events.
+      for (let i = 0; i < paginatedIndex.length; i++) {
+        try {
+          //TODO: Change to parallel Promise processing (Promise.all())
+          evt = await this.eventMgr.read(mnid, paginatedIndex[i]);
+          console.log("events for page("+i+"): "+JSON.stringify(evt));
+          events.push(evt);
+        } catch (error) {
+          console.log("Error on this.eventMgr.read");
+          console.log(error);
+          cb({ code: 500, message: error.message });
+          return;
+        }
+      }
+      const ret={ events: events, total: eventsFrom.length }
+      console.log("returning:" + JSON.stringify(ret));
+      cb(null, ret);
     }
   }
 
