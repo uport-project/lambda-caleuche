@@ -77,7 +77,7 @@ class EventGetHandler {
       //Fetch all the events since the previous
       let paginatedIndex;
       let evt;
-      let pagepage;
+      let page;
       let perPage;
       let events = [];
 
@@ -96,7 +96,7 @@ class EventGetHandler {
       try {
         //Get events since previous for mnid
         eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous);
-      }catch(err){
+      }catch(error){
         console.log("Error on this.eventMgr.getEventsFrom");
         console.log(error);
         cb({ code: 500, message: error.message });
