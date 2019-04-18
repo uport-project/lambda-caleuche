@@ -151,7 +151,7 @@ describe("S3Mgr", () => {
           done();
         })
         .catch(err => {
-          expect(err).toEqual("credentials not passed");
+          expect(err.message).toEqual("All access to this object has been disabled");
           done();
         });
     });
