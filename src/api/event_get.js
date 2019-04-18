@@ -31,6 +31,7 @@ class EventGetHandler {
     }
 
     const token=parts[1];
+    console.log("auth token: "+token)
 
     //Check token signature
     let payload;
