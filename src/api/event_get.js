@@ -44,10 +44,10 @@ class EventGetHandler {
       return;
     }
 
-    let mnid = payload.iss;
+    let iss = payload.iss;
     let previous = payload.previous;
 
-    console.log("MNID:" +mnid)
+    console.log("iss:" +iss)
     console.log("previous:" +previous)
 
     //Check if retrieving one event or multiple
@@ -61,7 +61,7 @@ class EventGetHandler {
       console.log("Getting eventId:" +eventId)
 
       try {
-        evt = await this.eventMgr.read(mnid, eventId);
+        evt = await this.eventMgr.read(iss, eventId);
         cb(null, { events: evt });
         return;
       } catch (error) {
@@ -94,8 +94,8 @@ class EventGetHandler {
 
       let eventsFrom;
       try {
-        //Get events since previous for mnid
-        eventsFrom = await this.eventMgr.getEventsFrom(mnid, previous);
+        //Get events since previous for iss
+        eventsFrom = await this.eventMgr.getEventsFrom(iss, previous);
       }catch(error){
         console.log("Error on this.eventMgr.getEventsFrom");
         console.log(error);
@@ -113,7 +113,7 @@ class EventGetHandler {
       for (let i = 0; i < paginatedIndex.length; i++) {
         try {
           //TODO: Change to parallel Promise processing (Promise.all())
-          evt = await this.eventMgr.read(mnid, paginatedIndex[i]);
+          evt = await this.eventMgr.read(iss, paginatedIndex[i]);
           console.log("events for page("+i+"): "+JSON.stringify(evt));
           events.push(evt);
         } catch (error) {
