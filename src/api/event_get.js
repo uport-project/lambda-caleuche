@@ -47,8 +47,8 @@ class EventGetHandler {
     let iss = payload.iss;
     let previous = payload.previous;
 
-    console.log("iss:" +iss)
-    console.log("previous:" +previous)
+    console.log("iss: " +iss)
+    console.log("previous: " +previous)
 
     //Check if retrieving one event or multiple
     if (event.pathParameters && event.pathParameters.id) {
@@ -58,7 +58,7 @@ class EventGetHandler {
       let evt;
       eventId = event.pathParameters.id;
 
-      console.log("Getting eventId:" +eventId)
+      console.log("Getting eventId: " +eventId)
 
       try {
         evt = await this.eventMgr.read(iss, eventId);
@@ -89,8 +89,8 @@ class EventGetHandler {
         page = 1;
         perPage = 100;
       }
-      console.log("page:"+page);
-      console.log("perPage:"+perPage);
+      console.log("page: "+page);
+      console.log("perPage: "+perPage);
 
       let eventsFrom;
       try {
@@ -102,12 +102,12 @@ class EventGetHandler {
         cb({ code: 500, message: error.message });
         return;
       }
-      console.log("eventsFrom:"+eventsFrom);
+      console.log("eventsFrom: "+eventsFrom);
 
       //Paginate
       //TODO: Change paginate to eventMgr.getEventsFrom()
       paginatedIndex = await this.paginate(eventsFrom, page, perPage);
-      console.log("paginatedIndex:"+paginatedIndex);
+      console.log("paginatedIndex: "+paginatedIndex);
 
       //Loop thru index and read events.
       for (let i = 0; i < paginatedIndex.length; i++) {
@@ -124,7 +124,7 @@ class EventGetHandler {
         }
       }
       const ret={ events: events, total: eventsFrom.length }
-      console.log("returning:" + JSON.stringify(ret));
+      console.log("returning: " + JSON.stringify(ret));
       cb(null, ret);
     }
   }
