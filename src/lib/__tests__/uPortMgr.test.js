@@ -35,7 +35,7 @@ describe("UportMgr", () => {
     Object.keys(jwts).forEach(didType => {
       test(didType, done => {
         const eventToken = jwts[didType];
-        Date.now = jest.genMockFunction().mockReturnValue(DATE_TO_USE);
+        Date.now = jest.fn().mockReturnValue(DATE_TO_USE);
 
         sut.verifyToken(eventToken).then(
           resp => {

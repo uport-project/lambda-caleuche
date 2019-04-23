@@ -25,11 +25,7 @@ class S3Mgr {
       Bucket: this.bucket,
       Key: fullKey
     };
-    let obj = await this.s3.getObject(params)
-      .promise()
-      .catch(err => {
-        throw("credentials not passed")
-      });
+    let obj = await this.s3.getObject(params).promise();
     return obj.Body.toString("utf-8");
   }
 

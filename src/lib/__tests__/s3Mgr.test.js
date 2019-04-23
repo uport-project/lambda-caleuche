@@ -1,5 +1,5 @@
-import AWS from "aws-sdk";
-import MockAWS from "aws-sdk-mock";
+const AWS = require("aws-sdk");
+const MockAWS = require("aws-sdk-mock");
 MockAWS.setSDKInstance(AWS);
 const S3Mgr = require("../s3Mgr");
 
@@ -151,7 +151,7 @@ describe("S3Mgr", () => {
           done();
         })
         .catch(err => {
-          expect(err).toEqual("credentials not passed");
+          expect(err.message).toEqual("All access to this object has been disabled");
           done();
         });
     });
