@@ -1,5 +1,5 @@
-import multihash from "multi-hash";
-import SHA256 from "crypto-js/sha256";
+const multihash=require("multi-hash");
+const SHA256 =require("crypto-js/sha256");
 
 class EventMgr {
   constructor(s3Mgr) {
